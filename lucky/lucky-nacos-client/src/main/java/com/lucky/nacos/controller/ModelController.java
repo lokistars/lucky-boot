@@ -24,6 +24,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RefreshScope
@@ -67,61 +68,11 @@ public class ModelController {
     @PostMapping("/input")
     public String input() {
         try {
-            Str();
-            String[] files =new String[] {"D:\\pdf\\2236\\20200804\\openAccount1.pdf","D:\\pdf\\2236\\20200804\\openAccount2.pdf"};
-            mergePdfFiles(files,"D:\\pdf\\2236\\20200804\\openAccount.pdf");
+            TimeUnit.SECONDS.sleep(3);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return "成功";
     }
 
-    public static void Str() throws IOException, DocumentException {
-
-        InputStream input = new FileInputStream(new File("F:\\project\\开户系统\\民银\\open-account\\open-account-service\\src\\main\\resources\\template\\1_opend.pdf"));
-        PdfReader reader = new PdfReader(input);
-        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream("D:\\pdf\\2236\\20200804\\openAccount1.pdf"));
-        input.close();
-        stamper.close();
-        reader.close();
-        File pathPdf1_file = new File("D:\\pdf\\2236\\20200804\\openAccount1.pdf");
-        System.out.println(pathPdf1_file.getName());
-    }
-
-    public static void mergePdfFiles(String[] files, String newfile) throws IOException, DocumentException {
-        Document document = null;
-        FileOutputStream stream = null;
-        PdfReader pageSize = null;
-        try {
-            pageSize = new PdfReader(files[0]);
-            System.out.println(pageSize.getPageSize(1)+"311111111");
-            document = new Document(pageSize.getPageSize(1));
-            stream =  new FileOutputStream(newfile);
-            PdfCopy copy = new PdfCopy(document, stream);
-            document.open();
-            for (int i = 0; i < files.length; i++) {
-                System.out.println(files[i]);
-                PdfReader reader = new PdfReader(files[i]);
-                int n = reader.getNumberOfPages();
-                for (int j = 1; j <= n; j++) {
-                    document.newPage();
-                    PdfImportedPage page = copy.getImportedPage(reader, j);
-                    copy.addPage(page);
-                }
-                if (reader!=null){
-                    reader.close();
-                }
-            }
-        } finally {
-            if (document != null) {
-                document.close();
-            }
-            if (pageSize !=null){
-                pageSize.close();
-            }
-            if (stream!=null){
-                stream.close();
-            }
-        }
-    }
 }
