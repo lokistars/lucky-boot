@@ -1,6 +1,6 @@
 package com.lucky.nacos.config;
 
-import com.lucky.nacos.annotation.CheckSessonResolver;
+import com.lucky.nacos.annotation.CheckSessionResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +22,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new CheckSessonResolver());
+        resolvers.add(new CheckSessionResolver());
     }
 }

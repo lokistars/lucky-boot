@@ -2,21 +2,22 @@ package com.lucky.nacos.annotation;
 
 
 import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver;
 
 
-public class CheckSessonResolver extends AbstractNamedValueMethodArgumentResolver {
+/**
+ * @author Nuany
+ */
+public class CheckSessionResolver extends AbstractNamedValueMethodArgumentResolver {
     /**
      * 解析器是否支持当前参数
      * @param parameter 需要被解析的Controller参数
-     * @return
+     * @return ture
      */
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-
-        return parameter.hasParameterAnnotation(CheckSesson.class) ;
+        return parameter.hasParameterAnnotation(CheckSession.class) ;
     }
 
     /**
@@ -26,7 +27,7 @@ public class CheckSessonResolver extends AbstractNamedValueMethodArgumentResolve
      */
     @Override
     protected NamedValueInfo  createNamedValueInfo(MethodParameter methodParameter) {
-        CheckSesson annotation = methodParameter.getParameterAnnotation(CheckSesson.class);
+        CheckSession annotation = methodParameter.getParameterAnnotation(CheckSession.class);
         return new NamedValueInfo(annotation.value(),true,null);
     }
 
@@ -45,7 +46,7 @@ public class CheckSessonResolver extends AbstractNamedValueMethodArgumentResolve
             return null;
         }else {
             try {
-                CheckSesson sesson = methodParameter.getParameterAnnotation(CheckSesson.class);
+                CheckSession sesson = methodParameter.getParameterAnnotation(CheckSession.class);
                 System.out.println(sesson.value()+"resolveName");
                 return sesson.value();
             } catch (Exception e) {
