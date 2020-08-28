@@ -21,7 +21,8 @@ public class NacosClientApplication {
     private RestTemplateBuilder builder;
     @Bean
     public RestTemplate restTemplate(){
-        return builder.setConnectTimeout(Duration.ofDays(15000)).setReadTimeout(Duration.ofDays(15000)).build();
+        //建立连接所用时间  15秒  服务器读取到可用资源所用的时间 15秒
+        return builder.setConnectTimeout(Duration.ofSeconds(15)).setReadTimeout(Duration.ofSeconds(15)).build();
     }
 
     public static void main(String[] args) {

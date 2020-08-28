@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.lucky.nacos.annotation.CheckSesson;
 import com.lucky.nacos.entity.ModelPage;
 import com.lucky.nacos.service.ModelPageService;
 import io.swagger.annotations.Api;
@@ -66,8 +67,9 @@ public class ModelController {
     }
 
     @PostMapping("/input")
-    public String input() {
+    public String input(@CheckSesson("sessionCode") String sessionCode) {
         try {
+            System.out.println(sessionCode);
             TimeUnit.SECONDS.sleep(3);
         } catch (Exception e) {
             e.printStackTrace();
