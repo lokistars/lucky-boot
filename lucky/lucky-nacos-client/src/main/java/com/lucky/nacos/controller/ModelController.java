@@ -55,6 +55,7 @@ public class ModelController {
         return body;
     }
     @PostMapping("/input")
+    @CheckSession("sessionCode")
     public String input(@CheckSession("sessionCode") String sessionCode) {
         try {
             System.out.println(sessionCode);

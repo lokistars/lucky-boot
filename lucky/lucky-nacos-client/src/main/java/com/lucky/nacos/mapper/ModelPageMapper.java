@@ -1,6 +1,13 @@
 package com.lucky.nacos.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lucky.nacos.entity.ModelPage;
-import tk.mybatis.mapper.common.Mapper;
-public interface ModelPageMapper extends Mapper<ModelPage> {
+
+import java.util.List;
+
+/**
+ * @author Nuany
+ */
+public interface ModelPageMapper extends BaseMapper<ModelPage> {
+    List<ModelPage> selectList();
 }

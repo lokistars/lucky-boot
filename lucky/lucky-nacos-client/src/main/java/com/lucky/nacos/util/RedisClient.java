@@ -1,4 +1,3 @@
-/*
 package com.lucky.nacos.util;
 
 
@@ -18,13 +17,11 @@ public class RedisClient {
         this.jedisPool = jedisPool;
     }
 
-    */
-/**
+    /**
      * 添加值
      * @param key
      * @param value
-     *//*
-
+     */
     public void set(String key,Object value){
         Jedis  jedis = null;
         try {
@@ -37,14 +34,12 @@ public class RedisClient {
         }
     }
 
-    */
-/**
+    /**
      * 设置过期时间
      * @param key
      * @param value
      * @param exptime
-     *//*
-
+     */
     public void setWithExpireTime(String key,String value,int exptime){
         Jedis jedis = null;
         try {
@@ -56,13 +51,11 @@ public class RedisClient {
         }
     }
 
-    */
-/**
+    /**
      * 获取值
      * @param key
      * @return
-     *//*
-
+     */
     public String get(String key) {
         Jedis jedis = null;
         try {
@@ -71,47 +64,43 @@ public class RedisClient {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (jedis != null)
+            if(jedis != null) {
                 jedis.close();
+            }
         }
             return null;
     }
-    */
-/**
+
+    /**
      * 判断key是否存在
      *
      * @param key
      * @return
-     *//*
-
+     */
     public Boolean exists(String key) {
         Jedis jedis = jedisPool.getResource();
         return jedis.exists(key);
     }
 
-    */
-/**
+    /**
      * 到时自动销毁
      *
-     * @param key
+     * @param key key
      * @param seconds 秒
-     *//*
-
+     */
     public Long expire(final String key, final int seconds) {
         Jedis jedis = jedisPool.getResource();
         return jedis.expire(key, seconds);
     }
 
-    */
-/**
+    /**
      * 删除
-     * @param key
-     * @return
-     *//*
-
+     * @param key 删除key
+     * @return long
+     */
     public long del(String key) {
         Jedis jedis = jedisPool.getResource();
         return jedis.del(key);
     }
 }
-*/
+

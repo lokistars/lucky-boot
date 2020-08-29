@@ -1,35 +1,38 @@
 package com.lucky.nacos.entity;
 
-import javax.persistence.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
 
-@Table(name = "ts_model_page")
+@TableName("ts_model_page")
 public class ModelPage implements Serializable {
     private static final long serialVersionUID = 1L;
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Id
+    @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
 
-    @Column(name = "model_id")
+    @TableField("model_id")
     private Integer modelId;
-
+    @TableField("name")
     private String name;
 
     private String nameEn;
 
-    @Column(name = "page_type")
+    @TableField("page_type")
     private Byte pageType;
 
-    @Column(name = "page_sub_name")
+    @TableField("page_sub_name")
     private String pageSubName;
 
-    @Column(name = "create_time")
+    @TableField("create_time")
     private Date createTime;
 
     private String content;
 
-    @Column(name = "page_id")
+    @TableField("page_id")
     private Integer pageId;
 
     public Integer getId() {
