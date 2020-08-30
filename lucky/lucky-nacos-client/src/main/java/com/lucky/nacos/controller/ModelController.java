@@ -56,7 +56,7 @@ public class ModelController {
     }
     @PostMapping("/input")
     @CheckSession("sessionCode")
-    public String input(@CheckSession("sessionCode") String sessionCode) {
+    public String input(String sessionCode) {
         try {
             System.out.println(sessionCode);
             TimeUnit.SECONDS.sleep(3);
