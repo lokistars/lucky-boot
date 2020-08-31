@@ -1,0 +1,23 @@
+server:
+  port: 6005
+spring:
+  application:
+    # 服务注册应用名称,它是构成 Nacos 配置管理 dataId字段的一部分
+    # 完整格式 :${prefix}-${spring.profiles.active}.${file-extension}
+    # prefix 默认为 spring.application.name 的值，也可以通过配置项 spring.cloud.nacos.config.prefix来配置
+    # spring.profiles.active 即为当前环境对应的 profile spring.profiles.active 为空时，对应的连接符 - 也将不存在
+    # file-exetension 为配置内容的数据格式，可以通过配置项 spring.cloud.nacos.config.file-extension 来配置。
+    name: nacos
+  cloud:
+    nacos:
+      # Nacos server 的地址
+      server-addr: localhost:8848
+      config:
+        file-extension: yml
+        prefix: ${spring.application.name}
+#监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
