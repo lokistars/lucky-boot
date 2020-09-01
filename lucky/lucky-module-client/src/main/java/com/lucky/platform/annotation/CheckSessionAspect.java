@@ -29,7 +29,7 @@ public class CheckSessionAspect {
     /**
      * 定义切入点
      */
-    @Pointcut("@annotation(com.lucky.nacos.annotation.CheckSession)")
+    @Pointcut("@annotation(com.lucky.platform.annotation.CheckSession)")
     private void cut() {
         // do nothing
     }

@@ -59,13 +59,6 @@
             <version>2.1.5</version>
         </dependency>-->
 
-        <!--mybatis-Plus -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-
         <!--hutool-all-->
         <dependency>
             <groupId>cn.hutool</groupId>

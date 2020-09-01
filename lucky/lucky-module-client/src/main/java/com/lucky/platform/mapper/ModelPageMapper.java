@@ -9,5 +9,5 @@ import java.util.List;
  * @author Nuany
  */
 public interface ModelPageMapper extends BaseMapper<ModelPage> {
-    List<ModelPage> selectList();
+
 }

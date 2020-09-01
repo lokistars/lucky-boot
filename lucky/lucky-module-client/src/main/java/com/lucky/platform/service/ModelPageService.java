@@ -19,7 +19,7 @@ public class ModelPageService {
 
     public List<ModelPage> findAll(){
 
-        return modelPageMapper.selectList();
+        return modelPageMapper.selectList(null);
     };
 
 
