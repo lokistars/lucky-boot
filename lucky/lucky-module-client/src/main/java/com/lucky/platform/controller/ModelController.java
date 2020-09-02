@@ -3,6 +3,8 @@ package com.lucky.platform.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.lucky.platform.annotation.CheckSession;
 import com.lucky.platform.entity.ModelPage;
+import com.lucky.platform.entity.city;
+import com.lucky.platform.service.CityService;
 import com.lucky.platform.service.ModelPageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,10 +29,17 @@ public class ModelController {
     @Autowired
     private ModelPageService modelPageService;
 
-    @GetMapping("/configinfo")
-    @ApiOperation(value = "/configinfo", notes = "测试")
-    public String query() {
-        return "fjkdla";
+    private CityService cityService;
+    @Autowired
+    public void setCityService(CityService cityService) {
+        this.cityService = cityService;
+    }
+
+    @GetMapping("/cityInfo")
+    @ApiOperation(value = "/cityInfo", notes = "测试")
+    public List<Map<String, Object>> query() {
+        List<Map<String, Object>> cities = cityService.cityList();
+        return cities;
     }
 
     @PostMapping("/model")
