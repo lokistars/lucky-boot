@@ -1,13 +1,16 @@
 package com.lucky.platform.service.Impl;
 
+import com.lucky.platform.entity.AreasTown;
 import com.lucky.platform.entity.city;
+import com.lucky.platform.mapper.AreasTownMapper;
 import com.lucky.platform.mapper.CityMapper;
 import com.lucky.platform.service.CityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,51 +19,62 @@ import java.util.Map;
  */
 @Service
 public class CityServiceImpl implements CityService {
+    private static final Logger log = LoggerFactory.getLogger(CityServiceImpl.class);
     private CityMapper cityMapper;
     @Autowired
     public void setCityMapper(CityMapper cityMapper) {
         this.cityMapper = cityMapper;
     }
+    private AreasTownMapper mapper;
+    @Autowired
+    public void setMapper(AreasTownMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @Override
     public List<Map<String, Object>> cityList() {
         List<city> cities = cityMapper.selectList(null);
-        List<String> list = list = new ArrayList<>();
-        String sen = "";
-        String shi = "";
-        String see = "";
-        Map<String, Object> map = new HashMap<>();
-        Map<String, Object> map1 = null;
-        List<Map<String, Object>> list1 = new ArrayList<>();
+        Integer st = null;
+        Integer shi = null;
         for (int i = 0; i < cities.size(); i++) {
-            String str = cities.get(i).getId() + "";
-            String sub = str.substring(str.length()-4, str.length());
-            if (!"".equals(sen)&&!"0000".equals(sub)){
-                if ("00".equals(sub.substring(sub.length()-2,sub.length()))){
-                    see = cities.get(i).getName().trim();
-                }
-                if ("".equals(see)||("00".equals(sub.substring(sub.length()-2,sub.length()))&&list.size()>0)){
-                        if (list.size()>0){
-                            map1.put(see,list);
-                        }else{
-                            map1.put(cities.get(i).getName().trim(),list);
-                        }
-                        list = new ArrayList<>();
-                        see = "";
-                 }else if (!"".equals(see)&&!"00".equals(sub.substring(sub.length()-2,sub.length()))){
-                        list.add(cities.get(i).getName().trim());
-                }
+            String s = cities.get(i).getId().toString();
+            if ("0000".equals(s.substring(s.length()-4,s.length()))){
+                AreasTown town = new AreasTown();
+                town.setAreaId(cities.get(i).getId());
+                town.setName(cities.get(i).getName());
+                town.setParentId(0);
+                town.setType(1);
+                mapper.insert(town);
+                log.info(cities.get(i).getName()+"省");
+                st = cities.get(i).getId();
+                shi = null;
             }
-            if ("0000".equals(sub)){
-                if (map1!= null&& map1.size()>0){
-                    map.put(shi,map1);
+            if ("00".equals(s.substring(s.length()-2,s.length()))&&!"0000".equals(s.substring(s.length()-4,s.length()))){
+                AreasTown town = new AreasTown();
+                town.setAreaId(cities.get(i).getId());
+                town.setName(cities.get(i).getName());
+                town.setParentId(st);
+                town.setType(2);
+                mapper.insert(town);
+                log.warn(cities.get(i).getName()+"市");
+                shi = cities.get(i).getId();
+            }
+            if (!"00".equals(s.substring(s.length()-2,s.length()))){
+                AreasTown town = new AreasTown();
+                town.setAreaId(cities.get(i).getId());
+                town.setName(cities.get(i).getName());
+                if (shi == null){
+                    town.setParentId(st);
+                    town.setType(2);
+                }else {
+                    town.setParentId(shi);
+                    town.setType(3);
                 }
-                shi = cities.get(i).getName().trim();
-                sen = str.substring(str.length()-2, str.length());
-                map1 = new HashMap<>();
+                mapper.insert(town);
+                log.error(cities.get(i).getName()+"区");
             }
         }
-        list1.add(map);
+        List<Map<String, Object>> list1 = new ArrayList<>();
         return list1;
     }
 }
