@@ -16,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         log.info("====================> 开始执行 视图拦截器");
-        registry.addViewController("/").setViewName("/thymeleaf/index.html");
+        //registry.addViewController("/").setViewName("/thymeleaf/index.html");
     }
 
     @Override

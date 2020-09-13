@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest
@@ -35,7 +36,9 @@ class LuckyNacosClientApplicationTests {
 
     @Test
     void model(){
-        
+        //加密
+        BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
+        bc.encode("123");
     }
 
 }
