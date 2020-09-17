@@ -73,6 +73,7 @@ public class RsaUtil {
      * @param publicKeyFilename  公钥文件路径
      * @param privateKeyFilename 私钥文件路径
      * @param secret             生成密钥的密文
+     * @param keySize            指定大小
      */
     public static void generateKey(String publicKeyFilename, String privateKeyFilename, String secret, int keySize) throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -101,7 +102,13 @@ public class RsaUtil {
         Files.write(dest.toPath(), bytes);
     }
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws Exception{
+        String privateKey = "D:\\public\\id_key";
+        String publicKey = "D:\\public\\id_key.pub";
+        generateKey(publicKey,privateKey,"nuany",1028);
+        //获取公钥
+        System.out.println("公钥:"+getPublicKey(publicKey));
+        //获取私钥
+        System.out.println("私钥:"+getPrivateKey(privateKey));
     }
 }

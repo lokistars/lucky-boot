@@ -1,3 +1,4 @@
+/*
 package com.lucky.platform.util;
 
 import com.baomidou.mybatisplus.annotation.DbType;
@@ -12,10 +13,12 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
 import java.util.Arrays;
 
+*/
 /**
  * MyBatis-Plus 自动生成器
  * @author 53276
  */
+/*
 public class CodeGeneratorUtil {
 
     private static final String[] str = {"t_user"};
@@ -84,3 +87,4 @@ public class CodeGeneratorUtil {
         mpg.execute();
     }
 }
+*/
