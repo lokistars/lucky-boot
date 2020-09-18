@@ -1,5 +1,6 @@
 package com.lucky.platform.util;
 
+import javax.crypto.Cipher;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,7 +8,7 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
+import java.util.*;
 
 /**
  * @author Nuany
@@ -46,7 +47,7 @@ public class RsaUtil {
      * @return
      * @throws Exception
      */
-    private static PublicKey getPublicKey(byte[] bytes) throws Exception {
+    public static PublicKey getPublicKey(byte[] bytes) throws Exception {
         bytes = Base64.getDecoder().decode(bytes);
         X509EncodedKeySpec spec = new X509EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
@@ -60,12 +61,29 @@ public class RsaUtil {
      * @return
      * @throws Exception
      */
-    private static PrivateKey getPrivateKey(byte[] bytes) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static PrivateKey getPrivateKey(byte[] bytes) throws NoSuchAlgorithmException, InvalidKeySpecException {
         bytes = Base64.getDecoder().decode(bytes);
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePrivate(spec);
     }
+
+    //公钥加密
+    public static byte[] publicEncrypt(byte[] content, PublicKey publicKey) throws Exception{
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        byte[] bytes = cipher.doFinal(content);
+        return bytes;
+    }
+
+    //私钥解密
+    public static byte[] privateDecrypt(byte[] content, PrivateKey privateKey) throws Exception{
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] bytes = cipher.doFinal(content);
+        return bytes;
+    }
+
 
     /**
      * 根据密文，生存rsa公钥和私钥,并写入指定文件
@@ -90,6 +108,34 @@ public class RsaUtil {
         writeFile(privateKeyFilename, privateKeyBytes);
     }
 
+    /**
+     *  根据密文，生存rsa公钥和私钥, 通过map返回
+      * @param secret 加密
+     * @param keySize 指定大小
+     * @return pub 公钥  pri 私钥
+     * @throws NoSuchAlgorithmException
+     */
+    public static Map<String, byte[]> generate(String secret,int keySize) throws NoSuchAlgorithmException {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        SecureRandom secureRandom = new SecureRandom(secret.getBytes());
+        keyPairGenerator.initialize(Math.max(keySize, DEFAULT_KEY_SIZE), secureRandom);
+        KeyPair keyPair = keyPairGenerator.genKeyPair();
+        byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+        byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+        Map<String, byte[]> map = new HashMap<String, byte[]>(2);
+        map.put("pub", publicKeyBytes);
+        map.put("pri", privateKeyBytes);
+        return map;
+    }
+
+    public static List<String> generateKey(String secret,int keySize) throws NoSuchAlgorithmException {
+        Map<String, byte[]> map = generate(secret,keySize);
+        List<String> list = new ArrayList<String>(2);
+        list.add(Base64.getEncoder().encodeToString(map.get("pub")));
+        list.add(Base64.getEncoder().encodeToString(map.get("pri")));
+        return  list;
+    }
+
     private static byte[] readFile(String fileName) throws Exception {
         return Files.readAllBytes(new File(fileName).toPath());
     }
@@ -110,5 +156,13 @@ public class RsaUtil {
         System.out.println("公钥:"+getPublicKey(publicKey));
         //获取私钥
         System.out.println("私钥:"+getPrivateKey(privateKey));
+
+        List<String> list = generateKey("jiaYan", 2048);
+        System.out.println(list.get(0));
+        System.out.println(list.get(1));
+        PrivateKey privateKey1 = getPrivateKey(list.get(1).getBytes());
+        PublicKey publicKey1 = getPublicKey(list.get(0).getBytes());
+        System.out.println(privateKey1);
+        System.out.println(publicKey1);
     }
 }
