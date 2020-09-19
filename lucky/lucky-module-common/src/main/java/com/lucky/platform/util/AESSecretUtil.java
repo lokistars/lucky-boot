@@ -38,7 +38,7 @@ public class AESSecretUtil {
      * @Data: 2018/7/28 18:42
      * @Modified By:
      */
-    public static byte[] encrypt(String data, String key) {
+    private static byte[] encrypt(String data, String key) {
         if (StringUtils.isNotBlank(data)) {
             try {
                 KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
@@ -68,7 +68,7 @@ public class AESSecretUtil {
      * @Data: 2018/7/28 19:01
      * @Modified By:
      */
-    public static byte[] decrypt(byte[] data, String key) {
+    private static byte[] decrypt(byte[] data, String key) {
         if (ArrayUtils.isNotEmpty(data)) {
             try {
                 KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
@@ -121,7 +121,7 @@ public class AESSecretUtil {
      * @Data: 2018/7/28 19:12
      * @Modified By:
      */
-    public static String parseByte2HexStr(byte buf[]) {
+    private static String parseByte2HexStr(byte buf[]) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < buf.length; i++) {
             String hex = Integer.toHexString(buf[i] & 0xFF);
@@ -140,7 +140,7 @@ public class AESSecretUtil {
      * @Data: 2018/7/28 19:13
      * @Modified By:
      */
-    public static byte[] parseHexStr2Byte(String hexStr) {
+    private static byte[] parseHexStr2Byte(String hexStr) {
         if (hexStr.length() < 1){
             return null;
         }

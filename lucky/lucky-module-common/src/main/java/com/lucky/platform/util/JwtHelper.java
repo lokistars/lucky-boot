@@ -10,6 +10,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
+import java.security.PrivateKey;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -34,24 +35,27 @@ public class JwtHelper {
 
     /**
      *  生成 Token
-     * @param str
+     * @param info
      * @param PrivateKey 私钥
      * @param expire  设置失效时间 秒
      * @return token
      * @throws Exception
      */
-    public static String generateToken(String str,String PrivateKey, int expire) throws Exception{
+    public static String generateToken(JWTInfo info,String PrivateKey, int expire) throws Exception{
         //添加构成JWT的参数
         Map<String, Object> headMap = new HashMap<>(2);
-        headMap.put("alg", SignatureAlgorithm.HS256.getValue());
+        headMap.put("alg", SignatureAlgorithm.RS256.getValue());
         headMap.put("typ", "JWT");
         LocalDateTime now = LocalDateTime.now();
         JwtBuilder builder = Jwts.builder()
-                .claim(USERNAME,str)
+                .claim(USERID,info.getUserId())
+                .claim(USERNAME,info.getUsername())
+                .claim(USERAGENT,info.getName())
                 .setHeader(headMap)
                 .setId(createJTI())
+                .setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()))
                 .setExpiration(Date.from(now.plusMinutes(expire).atZone(ZoneId.systemDefault()).toInstant()))
-                .signWith(RsaUtil.getPrivateKey(PrivateKey.getBytes()),SignatureAlgorithm.HS256);
+                .signWith(RsaUtil.getPrivateKey(PrivateKey.getBytes()),SignatureAlgorithm.RS256);
         return builder.compact();
     }
 
@@ -69,6 +73,13 @@ public class JwtHelper {
                 return claims;
     }
 
+    /**
+     * 获取Token中的用户信息
+     * @param token
+     * @param pubKey
+     * @return
+     * @throws Exception
+     */
     public static String getToken(String token,String pubKey) throws  Exception{
         if(token.startsWith("Bearer")){
             token = token.replace("Bearer ","");
@@ -77,8 +88,7 @@ public class JwtHelper {
         }
         Jws<Claims> claimsJws = parserToken(token, pubKey);
         Claims body = claimsJws.getBody();
-
-        return "";
+        return  body.get(USERID)+"";
     }
 
 
@@ -214,8 +224,15 @@ public class JwtHelper {
         String admin = generateJWT("17", "admin", user);
         Claims claims = parseJWT(admin);
         System.out.println(AESSecretUtil.decryptToStr((String) claims.get("userId"), DATAKEY));*/
-        System.out.println(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-
+        String pub = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0fbzdKTjixnmHqfaPhSo253rjhd4sFqBdeu//bPUZpTvxKCpyYWXifqHgBcnbFRr3uYwT3FV6BET7tvbFG/P7vqrkULjJRzoaoNGOkdF/w5pUr4JTKQZBFIpyny3J5LftIkc+VZq0fL819QvZv2NQ+YzTDYLt5X9zMJOLbIeLsaZ2ZKso9fB8Dt8L1r1O4bHr37vWmiRgGdv9wy2p+Xw7z02eqoQpByCtnmxPndwqz55AK0qEZrLchswzHsDVsXeKWelaU2VEYavmNkNeK9RBxqFXa/Vti+cIEI1OgdQE0LgLk4h8J395XLapRPKyrkK8g3K4hZecFuqOpOgjmkzBwIDAQAB";
+        String pri = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDR9vN0pOOLGeYep9o+FKjbneuOF3iwWoF167/9s9RmlO/EoKnJhZeJ+oeAFydsVGve5jBPcVXoERPu29sUb8/u+quRQuMlHOhqg0Y6R0X/DmlSvglMpBkEUinKfLcnkt+0iRz5VmrR8vzX1C9m/Y1D5jNMNgu3lf3Mwk4tsh4uxpnZkqyj18HwO3wvWvU7hsevfu9aaJGAZ2/3DLan5fDvPTZ6qhCkHIK2ebE+d3CrPnkArSoRmstyGzDMewNWxd4pZ6VpTZURhq+Y2Q14r1EHGoVdr9W2L5wgQjU6B1ATQuAuTiHwnf3lctqlE8rKuQryDcriFl5wW6o6k6COaTMHAgMBAAECggEAMdwuBjYd3uuAjSkZF4L6cmS3CmAiheaINcONLScmOlIF+jCZAUUbLmXzBYT6FKybjSwmrsbgOqLLk/5bsSe4Pi0CzxUOMcMCokCYTcCdK6t1cXO1a6DQXAlS6UXijKBBRXMGEWPnLAJC7tHxi8iMYmJpLiDreWZCBfziadGRf1O1tb3TtwKibYcrNTNsptrqBgb17QAHPT7PApl+9nk13IcfzIPv+rpYeqPxYzlqEx5QO/BSTWTJLySEC6qbP/l8hyI/4MQlD1eQw8VK/NlvQLxVX6BKemtdCaj7AOtq9Th/Poa0c1+ibqGACwFrftVFpXZU6Crm/+0SQ0AnNE2ZGQKBgQD8SliXuoXEtlU+4kY7/N6FAhvWeZRAorBSz1XkM7kmAwXRhlAvc/yprWZ0WNFrfmGmnNCXsVr7UXdlSaPG35xheekNHTrXhE5DxCJqZicv6wfFYZCGGQdGd1JDBfxg0G/RRyDuLoNnMIQ0pBHmuzqk8gf/cCOwI7qzwK1f6qJyKwKBgQDVDUkGzPS7JZMgKdHcGJ4DuhYQ5qc1QnuUbA1zfh+598OWC4hOy4Pr+AKj3eNBhNOvywnrH92JGckQ3+qdZDeCkGztnoh0S4c2Iozov8j0SFhUHHeTeM6pgF+CtjcejwKOWgKAEKoHj5O45VUEaX3UzobyxGDfLEWZtqPGBPZAlQKBgEKn1d5Ijn0Ze05A9DN3LMdRdk9lEdE96n4Gf3fqXnl3hPsFlHvlFhUyVgZZTQMsgdpGRio91n7d2ECvgxDRFXz/e55WYax9LTxkPn+D+8iCPSxeCZQUWsK4VciVdUeS6mgNddrX+SmzPMq3qm8eenEH7SsE0rj/x50kQ+o6kK6/AoGADIkLkurcO2aqkWnkfx6zrWR1h+kKTYfr3X++Ct2Q4FBDocBr9LbkvC2LejjD9kbqbZ10p/DoB/kMa4HBPCF5YqU8w35gaPdIrVa7E7a1DCp1h/1ky7h/8FktRXOTKqkfbWC+ZOqWFnvMJUTZC7lpPewo5H/Jc1gXgEPOvwfrtUECgYEA9GfeIxyy9y54OB+i8FoF45Y0lT82CtTtj8sF8WWA53Zr36WzF80H5YG2lGhR/jOxQ/O2R9uzBlmYvYpVda28LjIP+0yzKtUH1hOpF3EIBhOKZwY6dw6PTk7ZyoxDtkiIi0BuFihzDhYET7e5biq8HVKJ9xCvEdjzn820vtWjnvU=";
+        JWTInfo info = new JWTInfo();
+        info.setUserId("12");
+        info.setUsername("张三");
+        info.setName("zhangsan");
+        String s = generateToken(info, pri, 10);
+        s="Bearer "+s;
+        System.out.println(s);
     }
 
 }

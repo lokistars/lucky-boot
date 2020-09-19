@@ -149,17 +149,17 @@ public class RsaUtil {
     }
 
     public static void main(String[] args) throws Exception{
-        String privateKey = "D:\\public\\id_key";
+        /*String privateKey = "D:\\public\\id_key";
         String publicKey = "D:\\public\\id_key.pub";
         generateKey(publicKey,privateKey,"nuany",1028);
         //获取公钥
         System.out.println("公钥:"+getPublicKey(publicKey));
         //获取私钥
-        System.out.println("私钥:"+getPrivateKey(privateKey));
+        System.out.println("私钥:"+getPrivateKey(privateKey));*/
 
-        List<String> list = generateKey("jiaYan", 2048);
-        System.out.println(list.get(0));
-        System.out.println(list.get(1));
+        List<String> list = generateKey("Nuany997", 2048);
+        System.out.println("公钥:"+list.get(0));
+        System.out.println("私钥:"+list.get(1));
         PrivateKey privateKey1 = getPrivateKey(list.get(1).getBytes());
         PublicKey publicKey1 = getPublicKey(list.get(0).getBytes());
         System.out.println(privateKey1);
