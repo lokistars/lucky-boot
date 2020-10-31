@@ -25,20 +25,32 @@ public class ResponseResult<T> {
     public ResponseResult() {
     }
 
-    public static <T> ResponseResult<T> ok(T result) {
-        return new ResponseResult(0, true,"common.request.success", result);
+    public ResponseResult(Integer code, Boolean success, String message) {
+        this.code = code;
+        this.success = success;
+        this.message = message;
     }
-
-    public static <T> ResponseResult<T> fail(int code, Boolean success, String message, Object... args) {
-        return new ResponseResult(code, success, message, args);
-    }
-
 
     public ResponseResult(Integer code, Boolean success, String message, T data) {
         this.code = code;
         this.success = success;
         this.message = message;
         this.data = data;
+    }
+    public static <T> ResponseResult<T> ok(Integer code,T result) {
+        return new ResponseResult(code, true,"common.request.success", result);
+    }
+
+    public static <T> ResponseResult<T> ok(T result) {
+        return new ResponseResult(0, true,"common.request.success", result);
+    }
+
+    public static <T> ResponseResult<T> fail(String message) {
+        return new ResponseResult(-1, false, message );
+    }
+
+    public static <T> ResponseResult<T> fail(int code, Boolean success, String message, Object... args) {
+        return new ResponseResult(code, success, message, args);
     }
 
     public Integer getCode() {
