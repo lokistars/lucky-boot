@@ -32,8 +32,33 @@ public class BinTree {
         }
     }
 
+    /**
+     * 二分查找
+     * @param arr  有序数组
+     * @param num  查询数据
+     * @return
+     */
+    public static boolean dichotomy(int[] arr, int num){
+        int left = 0;
+        int middle = 0;
+        int right = arr.length -1;
+        while (left<right){
+            middle = left+ ((right-left)>>1);
+            if (arr[middle] == num){
+                return true;
+                // 如果中间这个数大于需要查找的数
+            }else if(arr[middle]>num){
+                right = middle -1;
+            }else{
+                left = middle +1;
+            }
+        }
+        return arr[left] == num;
+    }
 
     public static void main(String[] args) {
         System.out.println(6>>2);
+        int[] arr = {2,4,5,7,8,9,12,13,14,15,18};
+        System.out.println(dichotomy(arr, 2));
     }
 }
