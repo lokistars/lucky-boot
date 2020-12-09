@@ -56,9 +56,20 @@ public class BinTree {
         return arr[left] == num;
     }
 
+    /**
+     * 打印一个数的 32位
+     * @param num
+     */
+    public static void print(int num){
+        for(int i = 31; i>=0;i--){
+            System.out.print((num&(1<<i))== 0 ? "0":"1");
+        }
+        System.out.println( );
+    }
     public static void main(String[] args) {
+        print(1);
         System.out.println(6>>2);
-        int[] arr = {2,4,5,7,8,9,12,13,14,15,18};
+        int[] arr = {4,5,7,8,9,3,2,12,13,14,15,18};
         System.out.println(dichotomy(arr, 2));
     }
 }
