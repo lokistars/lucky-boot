@@ -7,6 +7,13 @@ import org.junit.jupiter.api.Test;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 public class LyckyList {
@@ -74,5 +81,11 @@ public class LyckyList {
     }
     @Test
     public void json(){
+        AtomicInteger cas = new AtomicInteger();
+        Lock lock = new ReentrantLock();
+        CountDownLatch latch = new CountDownLatch(20);
+        CyclicBarrier barrier = new CyclicBarrier(1,()->{
+            System.out.println("满了");
+        });
     }
 }
