@@ -37,9 +37,6 @@
 
 package com.lucky.leetCode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class P21MergeTwoSortedLists {
   public static void main(String[] args) {
     /*int[] arr = {6, 1, 8, 3};

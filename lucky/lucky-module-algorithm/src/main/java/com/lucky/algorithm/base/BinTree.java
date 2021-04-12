@@ -1,4 +1,4 @@
-package com.lucky.platform.base;
+package com.lucky.algorithm.base;
 
 /**
  * @author Nuany

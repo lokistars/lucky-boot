@@ -1,7 +1,5 @@
-package com.lucky.platform.base;
+package com.lucky.algorithm.base;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 /**

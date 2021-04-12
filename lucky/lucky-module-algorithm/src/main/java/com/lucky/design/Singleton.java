@@ -1,4 +1,4 @@
-package com.lucky.platform.design;
+package com.lucky.design;
 
 /**
  * @program: lucky
@@ -30,6 +30,7 @@ public class Singleton {
         System.out.println(ins == in);
     }
 }
+
 enum SingletonEnum{
     instance;
     public void getInstance(){};
