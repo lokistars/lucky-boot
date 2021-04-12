@@ -1,8 +1,6 @@
-package com.lucky.platform.base;
+package com.lucky.algorithm.base;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @program: lucky.module

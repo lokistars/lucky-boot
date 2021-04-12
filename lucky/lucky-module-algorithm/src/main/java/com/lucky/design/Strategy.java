@@ -1,4 +1,4 @@
-package com.lucky.platform.design;
+package com.lucky.design;
 
 /**
  * @program: lucky
@@ -25,6 +25,7 @@ public class Strategy {
     }
 
 }
+
 /**
  * 定义抽象策略
  */

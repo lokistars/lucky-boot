@@ -1,4 +1,4 @@
-package com.lucky.platform.design;
+package com.lucky.design;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -66,6 +66,7 @@ class UpEvent implements  Event{
         }
     }
 }
+
 /**
  * 观察者
  */
