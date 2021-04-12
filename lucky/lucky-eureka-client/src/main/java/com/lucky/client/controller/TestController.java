@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
-    @Value("${list}")
+    @Value("${server.port}")
     private String port;
 
     @RequestMapping("/list")
