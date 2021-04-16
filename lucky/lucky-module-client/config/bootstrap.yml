@@ -1,0 +1,31 @@
+spring:
+  redis:
+    host: 47.107.81.14
+    password: redis123
+    port: 6379
+    database: 0
+    pool:
+      max-active: 8
+      min-idle: 0
+      max-idle: 8
+      max-wait: 100000
+    timeout: 5000
+  datasource:
+    ## 数据库配置【数据库驱动｜数据库访问URL｜用户名｜数据库密码】
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.107.81.14:3306/kdbase?useUnicode=true&characterEncoding=utf8&serverTimezone=Hongkong&zeroDateTimeBehavior=round&allowMultiQueries=true
+    username: root
+    password: netinfo
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
