@@ -20,3 +20,5 @@ eureka:
     hostname: eureka-client #eureka服务端实例名称
     prefer-ip-address: true #访问路径可以显示IP地址
     instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    #续约间隔 默认30秒 估算每天能承受多大得访问量(向server发送心跳) 续约间隔*服务实例数
+    lease-renewal-interval-in-seconds: 30
