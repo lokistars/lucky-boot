@@ -7,8 +7,13 @@ eureka:
   instance:
     hostname: localhost #eureka服务端实例名称
   server:
-    enable-self-preservation: true #自我保护模式默认开启
-
+    enable-self-preservation: true #自我保护模式默认 true开启
+    #  默认是 0.85 统计心跳失败比例 如果低于 85%，Eureka Server 会将这些实例保护起来
+    renewal-percent-threshold: 0.85
+    # 指定定时任务的调度频率,剔除过期实例
+    eviction-interval-timer-in-ms: 1000
+    use-read-only-response-cache: false # 默认是true 多级缓存
+    response-cache-update-interval-ms: 1000  #readWrite 和readOnly 同步时间间隔 默认30秒同步一次
   client:
     register-with-eureka: false # 表示不向注册中心注册自己
     fetch-registry: false #false表示自己就是注册中心
