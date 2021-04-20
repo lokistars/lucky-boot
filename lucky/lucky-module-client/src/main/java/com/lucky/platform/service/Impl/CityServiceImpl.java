@@ -21,11 +21,14 @@ import java.util.Map;
 public class CityServiceImpl implements CityService {
     private static final Logger log = LoggerFactory.getLogger(CityServiceImpl.class);
     private CityMapper cityMapper;
+
     @Autowired
     public void setCityMapper(CityMapper cityMapper) {
         this.cityMapper = cityMapper;
     }
+
     private AreasTownMapper mapper;
+
     @Autowired
     public void setMapper(AreasTownMapper mapper) {
         this.mapper = mapper;
@@ -38,40 +41,40 @@ public class CityServiceImpl implements CityService {
         Integer shi = null;
         for (int i = 0; i < cities.size(); i++) {
             String s = cities.get(i).getId().toString();
-            if ("0000".equals(s.substring(s.length()-4,s.length()))){
+            if ("0000".equals(s.substring(s.length() - 4, s.length()))) {
                 AreasTown town = new AreasTown();
                 town.setAreaId(cities.get(i).getId());
                 town.setName(cities.get(i).getName());
                 town.setParentId(0);
                 town.setType(1);
                 mapper.insert(town);
-                log.info(cities.get(i).getName()+"省");
+                log.info(cities.get(i).getName() + "省");
                 st = cities.get(i).getId();
                 shi = null;
             }
-            if ("00".equals(s.substring(s.length()-2,s.length()))&&!"0000".equals(s.substring(s.length()-4,s.length()))){
+            if ("00".equals(s.substring(s.length() - 2, s.length())) && !"0000".equals(s.substring(s.length() - 4, s.length()))) {
                 AreasTown town = new AreasTown();
                 town.setAreaId(cities.get(i).getId());
                 town.setName(cities.get(i).getName());
                 town.setParentId(st);
                 town.setType(2);
                 mapper.insert(town);
-                log.warn(cities.get(i).getName()+"市");
+                log.warn(cities.get(i).getName() + "市");
                 shi = cities.get(i).getId();
             }
-            if (!"00".equals(s.substring(s.length()-2,s.length()))){
+            if (!"00".equals(s.substring(s.length() - 2, s.length()))) {
                 AreasTown town = new AreasTown();
                 town.setAreaId(cities.get(i).getId());
                 town.setName(cities.get(i).getName());
-                if (shi == null){
+                if (shi == null) {
                     town.setParentId(st);
                     town.setType(2);
-                }else {
+                } else {
                     town.setParentId(shi);
                     town.setType(3);
                 }
                 mapper.insert(town);
-                log.error(cities.get(i).getName()+"区");
+                log.error(cities.get(i).getName() + "区");
             }
         }
         List<Map<String, Object>> list1 = new ArrayList<>();

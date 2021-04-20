@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- *  security 自定义验证登录过滤器
+ * security 自定义验证登录过滤器
+ *
  * @author 53276
  */
 public class JwtVerifyFilter extends BasicAuthenticationFilter {
@@ -25,10 +26,10 @@ public class JwtVerifyFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
         // 判断token 是否为空
-        if(header == null || header.startsWith("Bearer ")){
+        if (header == null || header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
 
-        }else{
+        } else {
             String token = header.replace("Bearer ", "");
             //把用户对象放入容器中
             //SecurityContextHolder.getContext().setAuthentication();

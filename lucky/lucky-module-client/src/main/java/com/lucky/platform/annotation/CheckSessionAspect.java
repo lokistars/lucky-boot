@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -36,10 +37,11 @@ public class CheckSessionAspect {
 
     /**
      * 前置通知
+     *
      * @param joinPoint
      */
     @Before("cut()")
-    public void Before(JoinPoint joinPoint){
+    public void Before(JoinPoint joinPoint) {
         System.out.println("******拦截前的逻辑******");
         System.out.println("目标方法名为:" + joinPoint.getSignature().getName());
         System.out.println("目标方法所属类的简单类名:" + joinPoint.getSignature().getDeclaringType().getSimpleName());
@@ -53,6 +55,7 @@ public class CheckSessionAspect {
     /**
      * 环绕通知
      * 环绕通知非常强大，可以决定目标方法是否执行，什么时候执行，执行时是否需要替换方法参数，执行完毕是否需要替换返回值。
+     *
      * @param joinPoint
      * @return
      * @throws Throwable
@@ -72,8 +75,8 @@ public class CheckSessionAspect {
         String queryString = request.getQueryString();
         log.info("{url:{}, method:{}, queryString:{}}", url, method, queryString);
         String header = request.getHeader(session.value());
-        if(header!=null){
-            if (header.equals("demoData321")){
+        if (header != null) {
+            if (header.equals("demoData321")) {
                 return joinPoint.proceed();
             }
         }

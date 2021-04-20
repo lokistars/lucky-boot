@@ -5,8 +5,8 @@
  *    webpack ./src/index.js -o ./build/build.js --mode=production
  */
 
-function add(x,y) {
-    return x+y;
+function add(x, y) {
+    return x + y;
 }
 
-add(3,5);
+add(3, 5);

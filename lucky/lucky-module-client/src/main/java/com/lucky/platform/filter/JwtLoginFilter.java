@@ -16,6 +16,7 @@ import java.io.IOException;
 
 /**
  * security 自定义认证过滤器
+ *
  * @author 53276
  */
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -28,7 +29,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     /**
      * 认证
-     * @param request request
+     *
+     * @param request  request
      * @param response response
      * @return
      * @throws AuthenticationException
@@ -41,13 +43,14 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
             //
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
             return authenticationManager.authenticate(authRequest);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     *  认证成功 给客户返回 Token
+     * 认证成功 给客户返回 Token
+     *
      * @param request
      * @param response
      * @param chain
@@ -62,7 +65,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         user.setUserName(authResult.getName());
         String token = "123456";
         //把 Token 写入到请求头
-        response.setHeader("Authorization","Bearer "+token);
+        response.setHeader("Authorization", "Bearer " + token);
 
     }
 }

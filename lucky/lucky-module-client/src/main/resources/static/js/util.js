@@ -1,6 +1,6 @@
-(function(window) {
+(function (window) {
     var DateUtils = {};
-    DateUtils.toString = function(){
+    DateUtils.toString = function () {
         //console.log(tool)
         alert("toString");
     };

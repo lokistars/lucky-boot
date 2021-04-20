@@ -20,17 +20,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
+
     /**
      * 加密方式注入到IOC容器
+     *
      * @return
      */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    };
+    }
+
+    ;
 
     /**
      * 配置user-detail服务
+     *
      * @param auth 认证管理器
      * @throws Exception
      */
@@ -42,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 全局请求忽略规则配置，一般用来配置无需安全检查的路径 （比如说静态文件，比如说注册页面）
+     *
      * @param web Web
      * @throws Exception
      */
@@ -52,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Request层面的配置
+     *
      * @param http http 权限控制
      * @throws Exception
      */

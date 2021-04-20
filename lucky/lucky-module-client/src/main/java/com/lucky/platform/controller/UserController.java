@@ -26,11 +26,12 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
     @GetMapping("/login")
-    public String userLogin(String username,String password){
-        System.out.println(username+"密码"+password);
+    public String userLogin(String username, String password) {
+        System.out.println(username + "密码" + password);
         //List<User> login = userService.login(username, password);
-            return "登录失败";
+        return "登录失败";
     }
 }
 

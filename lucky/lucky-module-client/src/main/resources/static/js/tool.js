@@ -73,7 +73,7 @@ define(['tql!thymeleaf/main.html', 'table'], function (main) {  /*define 定义�
                             "white-space": 'nowrap',  //文本不进行换行
                             "text-overflow": 'ellipsis',
                             "overflow": 'hidden',
-                            "max-width":"50px"
+                            "max-width": "50px"
                         }
                     }
                 }
@@ -133,21 +133,23 @@ define(['tql!thymeleaf/main.html', 'table'], function (main) {  /*define 定义�
         //按钮
         initEvents();
     }
+
     function initEvents() {
         //查询
         $("#btn-search").click(function () {
             $("table.table").bootstrapTable('refreshOptions', {pageNumber: 1});
         });
     }
+
     var str = function () {
         var context = {};
         var html = '';
         html += '<div class="form-inline">';
         html += '<form id="search-form" onsubmit="return false;">';
         html += '<div class="form-group">';
-        html +='<button type="button" class="my-btn" id="btn-search">';
-        html +='<span class="glyphicon glyphicon-search position-left" aria-hidden="true"></span>查询';
-        html +='</button>';
+        html += '<button type="button" class="my-btn" id="btn-search">';
+        html += '<span class="glyphicon glyphicon-search position-left" aria-hidden="true"></span>查询';
+        html += '</button>';
         html += '</div></form></div>';
         html += '<table id="table"></table>';
         context.html = html;

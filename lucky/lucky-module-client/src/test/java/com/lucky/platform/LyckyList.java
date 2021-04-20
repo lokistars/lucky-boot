@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 public class LyckyList {
-    public Character name ;
+    public Character name;
 
     public Character getName() {
         return name;
@@ -30,19 +30,20 @@ public class LyckyList {
     public static void main(String[] args) {
         JSONArray jsonArray = new JSONArray();
         JSONObject object = new JSONObject();
-        object.put("name","哈哈哈");
-        object.put("age",123);
-        object.put("sex","男");
+        object.put("name", "哈哈哈");
+        object.put("age", 123);
+        object.put("sex", "男");
         jsonArray.add(object);
-        jsonArray = jsonArray.stream().map( s -> {
+        jsonArray = jsonArray.stream().map(s -> {
             JSONObject obj = (JSONObject) s;
             String age = obj.getString("age");
             return age;
         }).collect(Collectors.toCollection(JSONArray::new));
         System.out.println(jsonArray);
     }
+
     @Test
-    public  void LocalTest(){
+    public void LocalTest() {
         LyckyList list = new LyckyList();
         String st = "";
         System.out.println(list.toString());
@@ -50,14 +51,14 @@ public class LyckyList {
     }
 
     @Test
-    public void dataTest(){
+    public void dataTest() {
         JSONObject jsonObject = JSONObject.parseObject("{\"1\": {\"name\":\"maple\",\"sex\":\"man\",\"childrens\":[{\"name\":\"草根\",\"sex\":\"man\",\"date\":\"2018-01-01\"},{\"name\":\"merry\",\"sex\":\"woman\",\"date\":\"2017-01-01\"},{\"name\":\"liming\",\"sex\":\"woman\",\"date\":\"2016-01-01\"}]}}");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Comparator<Object> dateComparator = (a, b) -> {
             int result = 0;
             try {
-                Date dt1 = df.parse(((JSONObject)a).getString("date"));
-                Date dt2 = df.parse(((JSONObject)b).getString("date"));
+                Date dt1 = df.parse(((JSONObject) a).getString("date"));
+                Date dt2 = df.parse(((JSONObject) b).getString("date"));
                 result = dt1.compareTo(dt2);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -79,12 +80,13 @@ public class LyckyList {
         });
         System.out.println(jsonObject);
     }
+
     @Test
-    public void json(){
+    public void json() {
         AtomicInteger cas = new AtomicInteger();
         Lock lock = new ReentrantLock();
         CountDownLatch latch = new CountDownLatch(20);
-        CyclicBarrier barrier = new CyclicBarrier(1,()->{
+        CyclicBarrier barrier = new CyclicBarrier(1, () -> {
             System.out.println("满了");
         });
     }

@@ -30,6 +30,7 @@ public class ModelController {
     private ModelPageService modelPageService;
 
     private CityService cityService;
+
     @Autowired
     public void setCityService(CityService cityService) {
         this.cityService = cityService;
@@ -63,6 +64,7 @@ public class ModelController {
         System.out.println(object);
         return body;
     }
+
     @PostMapping("/input")
     @CheckSession("sessionCode")
     public String input(String sessionCode) {

@@ -5,7 +5,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 public class LettuceClient {
     private LettuceConnectionFactory lettuceConnectionFactory;
 
-    public void set(String key,Object value){
+    public void set(String key, Object value) {
 
     }
 }

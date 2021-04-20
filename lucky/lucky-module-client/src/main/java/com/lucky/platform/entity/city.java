@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class city implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId("id")
-    private Integer id ;
+    private Integer id;
     @TableField("name")
     private String name;
 

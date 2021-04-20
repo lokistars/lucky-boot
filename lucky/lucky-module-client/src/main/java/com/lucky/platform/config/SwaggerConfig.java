@@ -24,7 +24,8 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.lucky.nacos.controller"))
                 .build();
     }
-    private ApiInfo apiInfo(){
+
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("Spring Boot中使用Swagger2构建RESTful APIs")
                 .description("更多请关注http://www.baidu.com")
                 .termsOfServiceUrl("http://www.baidu.com")

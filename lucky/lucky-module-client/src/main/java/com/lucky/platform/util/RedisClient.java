@@ -6,7 +6,7 @@ import redis.clients.jedis.JedisPool;
 
 public class RedisClient {
 
-    private JedisPool jedisPool ;
+    private JedisPool jedisPool;
 
 
     public JedisPool getJedisPool() {
@@ -19,28 +19,30 @@ public class RedisClient {
 
     /**
      * 添加值
+     *
      * @param key
      * @param value
      */
-    public void set(String key,Object value){
-        Jedis  jedis = null;
+    public void set(String key, Object value) {
+        Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
-            jedis.set(key,value.toString());
-        }catch (Exception e){
+            jedis.set(key, value.toString());
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             jedis.close();
         }
     }
 
     /**
      * 设置过期时间
+     *
      * @param key
      * @param value
      * @param exptime
      */
-    public void setWithExpireTime(String key,String value,int exptime){
+    public void setWithExpireTime(String key, String value, int exptime) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
@@ -53,6 +55,7 @@ public class RedisClient {
 
     /**
      * 获取值
+     *
      * @param key
      * @return
      */
@@ -64,11 +67,11 @@ public class RedisClient {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(jedis != null) {
+            if (jedis != null) {
                 jedis.close();
             }
         }
-            return null;
+        return null;
     }
 
     /**
@@ -85,7 +88,7 @@ public class RedisClient {
     /**
      * 到时自动销毁
      *
-     * @param key key
+     * @param key     key
      * @param seconds 秒
      */
     public Long expire(final String key, final int seconds) {
@@ -95,6 +98,7 @@ public class RedisClient {
 
     /**
      * 删除
+     *
      * @param key 删除key
      * @return long
      */

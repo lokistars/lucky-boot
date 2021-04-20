@@ -38,7 +38,7 @@ requirejs.config({
 
     }
 });
-require(['jquery','axios'], function ($,axios) {
+require(['jquery', 'axios'], function ($, axios) {
     require(["tool", "bootstrap", 'layer'], function (tool) {
         $("#abc").click(function () {
             tool.str();

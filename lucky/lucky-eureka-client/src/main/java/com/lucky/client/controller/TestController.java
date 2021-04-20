@@ -11,7 +11,7 @@ public class TestController {
     private String port;
 
     @RequestMapping("/list")
-    public String query(){
+    public String query() {
         return "端口:" + this.port;
     }
 }

@@ -13,7 +13,7 @@ import java.util.concurrent.CountDownLatch;
  **/
 public class ZookeeperTest {
 
-    public static void main(String[]  args) throws Exception{
+    public static void main(String[] args) throws Exception {
         String url = "127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183";
         // 创建链接  传入的这个watcher 是session级别的。
         /**
@@ -23,7 +23,7 @@ public class ZookeeperTest {
         ZooKeeper zk = new ZooKeeper(url, 3000, (watcher) -> {
             Watcher.Event.KeeperState state = watcher.getState();
             Watcher.Event.EventType type = watcher.getType();
-            System.out.println("watcher:"+watcher.toString());
+            System.out.println("watcher:" + watcher.toString());
             switch (state) {
                 case Unknown:
                     break;
@@ -68,9 +68,9 @@ public class ZookeeperTest {
                 break;
         }
         // watch true or false
-        Stat exists = zk.exists("/lucky",false);
+        Stat exists = zk.exists("/lucky", false);
         // ZooDefs.Ids  是否有ACL权限  CreateMode 节点类型
-        if (exists == null){
+        if (exists == null) {
             String pathName = zk.create("/lucky", "abc".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
             //
             Stat stat = new Stat();
@@ -78,7 +78,7 @@ public class ZookeeperTest {
                 System.out.println("getDate watcher :" + watcher.toString());
                 try {
                     // 重复注册
-                    zk.getData("/lucky",(Watcher) watcher,stat);
+                    zk.getData("/lucky", (Watcher) watcher, stat);
                 } catch (KeeperException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -86,14 +86,14 @@ public class ZookeeperTest {
                 }
             }, stat);
 
-            System.out.println("元数据:"+new String(data));
+            System.out.println("元数据:" + new String(data));
 
             //触发回调
             Stat stat1 = zk.setData("/lucky", "321".getBytes(), 0);
 
-        }else {
-            System.out.println("删除数据:"+exists.getVersion());
-            zk.delete("/lucky",exists.getVersion());
+        } else {
+            System.out.println("删除数据:" + exists.getVersion());
+            zk.delete("/lucky", exists.getVersion());
         }
     }
 }

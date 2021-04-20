@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 
 import java.util.Collection;
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -22,9 +24,9 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Nuany
  * @since 2020-09-12
  */
-@ApiModel(value="TUser对象", description="用户登录")
+@ApiModel(value = "TUser对象", description = "用户登录")
 @TableName("t_user")
-public class User implements  UserDetails{
+public class User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -70,6 +72,7 @@ public class User implements  UserDetails{
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     //角色
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

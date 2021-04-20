@@ -31,6 +31,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 认证业务
+     *
      * @param userName 用户输入的用户名
      * @return
      * @throws UsernameNotFoundException
@@ -38,8 +39,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("userName",userName)
-                .eq("user_stats",0);
+        wrapper.eq("userName", userName)
+                .eq("user_stats", 0);
         return userMapper.selectOne(wrapper);
     }
 }

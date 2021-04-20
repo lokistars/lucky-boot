@@ -26,20 +26,19 @@ public class RedisConfig {
     @Value("${spring.redis.host}")
     private String host;
     @Value("${spring.redis.port}")
-    private int  port;
+    private int port;
     @Value("${spring.redis.password}")
     private String password;
     @Value("${spring.redis.database}")
-    private int  database;
+    private int database;
     @Value("${spring.redis.timeout}")
-    private int  timeout;
+    private int timeout;
     @Value("${spring.redis.pool.max-idle}")
-    private int  maxIdle;
+    private int maxIdle;
     @Value("${spring.redis.pool.max-wait}")
-    private long  maxWaitMillis;
+    private long maxWaitMillis;
     @Value("${spring.redis.pool.max-active}")
-    private int  maxTotal;
-
+    private int maxTotal;
 
 
     @Bean
@@ -61,6 +60,7 @@ public class RedisConfig {
         template.afterPropertiesSet();
         return template;
     }
+
     private RedisClient getRedisClient() {
 
         RedisURI.Builder redisURI = RedisURI.builder();
@@ -71,16 +71,17 @@ public class RedisConfig {
         if (password != null) {
             redisURI.withPassword(password);
         }
-        return  RedisClient.create(redisURI.build());
+        return RedisClient.create(redisURI.build());
     }
+
     @Bean
-    public StatefulRedisConnection redisPole(){
+    public StatefulRedisConnection redisPole() {
         //  创建客户端
         RedisClient redisClient = getRedisClient();
         //超时时间 20秒
         redisClient.setDefaultTimeout(Duration.ofSeconds(20));
         //  创建线程安全的连接
-        StatefulRedisConnection<String,String> connection = redisClient.connect();
+        StatefulRedisConnection<String, String> connection = redisClient.connect();
         // 创建同步命令
         //RedisCommands<String, String> redisCommands = connection.sync();
         return connection;

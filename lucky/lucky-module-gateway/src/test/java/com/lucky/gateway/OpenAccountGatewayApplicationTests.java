@@ -1,17 +1,13 @@
-package com.lucky.server;
+package com.lucky.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.time.Period;
-
 @SpringBootTest
-class LuckyEurekaServerApplicationTests {
+class OpenAccountGatewayApplicationTests {
 
     @Test
     void contextLoads() {
-
     }
 
 }

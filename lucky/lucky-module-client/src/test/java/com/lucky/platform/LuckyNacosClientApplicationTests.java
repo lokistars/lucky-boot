@@ -28,14 +28,14 @@ class LuckyNacosClientApplicationTests {
     @Test
     void contextLoads() {
         RedisCommands sync = connection.sync();
-        sync.set("123","呵呵呵");
+        sync.set("123", "呵呵呵");
         System.out.println(sync.get("123"));
-        redisTemplate.opsForValue().set("12311","呵呵");
+        redisTemplate.opsForValue().set("12311", "呵呵");
         System.out.println(redisTemplate.opsForValue().get("哈哈"));
     }
 
     @Test
-    void model(){
+    void model() {
         //加密
         BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
         bc.encode("123");
