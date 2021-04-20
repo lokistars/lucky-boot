@@ -11,7 +11,7 @@
     </parent>
 
     <!--<groupId>com.lucky.platform</groupId>-->
-    <artifactId>lucky-module--gateway</artifactId>
+    <artifactId>lucky-module-gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>lucky-module-gateway</name>
     <description>gateway project for Spring Boot</description>
