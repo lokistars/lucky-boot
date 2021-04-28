@@ -96,4 +96,57 @@ public class ListNode {
     }
     System.out.println(head.val);
   }
+
+  static class Queue {
+    private ListNode head;
+    private ListNode tail;
+    private int size;
+
+    public Queue(){
+      this.head = null;
+      this.tail = null;
+      this.size = 0;
+    }
+
+    public boolean isEmpty(){
+      return this.size == 0;
+    }
+
+    public int size(){
+      return this.size;
+    }
+
+    public void offer(int val){
+      ListNode node = new ListNode(val);
+      if (tail == null){
+        this.head = node;
+        this.tail = node;
+      }else{
+        this.head.next =node;
+        this.tail = head;
+      }
+      size++;
+    }
+    public int poll(){
+      int v = 0;
+      if (head != null){
+        v = head.val;
+        head = head.next;
+        size --;
+      }
+      if (head == null){
+        tail = null;
+      }
+      return v;
+    }
+    public int peek(){
+      int v = 0;
+      if (head != null){
+        v = head.val;
+      }
+      return v;
+    }
+  }
+
+
 }
