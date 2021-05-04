@@ -64,8 +64,42 @@ public class P20ValidParentheses {
     String str1 = "()[]{}";
     String str2 = "([)]";
     String str3 = "{[]}";
-    boolean valid = new Solution().isValid(str);
-    System.out.println(valid);
+    int len = 30;
+    String s = strRandom(len);
+    System.out.println(new Solution().isValid(s));
+  }
+
+  public static String strRandom(int len){
+    StringBuilder str = new StringBuilder();
+    for (int i = 0; i < len; i++) {
+      int num = (int) (Math.random()*5)+1;
+      String st = "";
+      switch (num){
+        case 0:
+          st = "(";
+          break;
+        case 1:
+          st = ")";
+          break;
+        case 2:
+          st = "{";
+          break;
+        case 3:
+          st = "}";
+          break;
+        case 4:
+          st = "[";
+          break;
+        case 5:
+          st = "]";
+          break;
+        default:
+          st = "1";
+          break;
+      }
+      str.append(st);
+    }
+    return str.toString();
   }
 
   static class Solution {
@@ -73,9 +107,14 @@ public class P20ValidParentheses {
       if ((s.length() & 1) == 1) {
         return false;
       }
+      //()[]{}
+      Stack<Character> sk = new Stack<>();
       for (int i = s.length() - 1; i >= 0; i--) {
-        Stack<Character> sk = new Stack<>();
         char c = s.charAt(i);
+        sk.add(c);
+        /*if (){
+
+        }*/
       }
       return true;
     }
