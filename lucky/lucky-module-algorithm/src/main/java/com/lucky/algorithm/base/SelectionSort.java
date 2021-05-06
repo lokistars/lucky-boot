@@ -99,7 +99,7 @@ public class SelectionSort {
     }
 
     /**
-     * 并归排序
+     * 归并排序
      */
     static class MergeSort{
 
@@ -154,17 +154,21 @@ public class SelectionSort {
         public void merge(int[] arr,int left,int mid,int right){
             // 定义一个数组 存放 left - right 的数
             int[] arrCopy = new int[(right -left) +1];
-            int i = 0,l = left,m= mid+1;
+            // 定义两个指针 左组数 l  右组数 r
+            int i = 0,l = left,r= mid+1,ans = 0;
             // 判断 arr 的left 数和right 数那个大 拷贝谁
-            while (l<=mid && m<= right){
+            while (l<=mid && r<= right){
+                // 计算小和问题 右组数有多少个大于 arr[l] 右组数 减去当前指针+1 等于当前个数
+                // 数组中有多少个逆序对 小于更改大于
+                ans += arr[l] < arr[r]?arr[l]*(right-r+1):0;
                 // 如果左边数小于右边数 拷贝左边
-                arrCopy[i++] = arr[l] <= arr[m]?arr[l++]:arr[m++];
+                arrCopy[i++] = arr[l] < arr[r]?arr[l++]:arr[r++];
             }
             while (l <= mid){
                 arrCopy[i++] =arr[l++];
             }
-            while (m<=right){
-                arrCopy[i++] =arr[m++];
+            while (r<=right){
+                arrCopy[i++] =arr[r++];
             }
             for (int j = 0; j < arrCopy.length; j++) {
                 arr[left+j] = arrCopy[j];
