@@ -51,7 +51,7 @@ public class SelectionSort {
     public static void BubblingSort(int[] arr){
         for (int i = 0; i < arr.length-1; i++) {
             //第一个元素和第二个匹配,比他大进行交换
-            for (int j= i; j < arr.length-1; j++) {
+            for (int j= 0; j < arr.length-1; j++) {
                 if(arr[j]>arr[j+1]){
                     swap(arr,j, j+1);
                 }
