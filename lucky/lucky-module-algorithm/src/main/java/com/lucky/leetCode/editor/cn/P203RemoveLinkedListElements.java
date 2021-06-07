@@ -35,7 +35,7 @@
 // 👍 586 👎 0
 
 package com.lucky.leetCode.editor.cn;
-
+//Java：移除链表元素
 public class P203RemoveLinkedListElements{
     public static void main(String[] args) {
         ListNode node = new ListNode(1);

@@ -36,7 +36,7 @@
 // 👍 1616 👎 0
 
 package com.lucky.leetCode.editor.cn;
-
+//Java: 合并两个有序链表
 public class P21MergeTwoSortedLists {
   public static void main(String[] args) {
     /*int[] arr = {6, 1, 8, 3};

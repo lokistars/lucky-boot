@@ -55,7 +55,7 @@
 // 👍 1904 👎 0
 
 package com.lucky.leetCode.editor.cn;
-
+//Java: 删除有序数组中的重复项
 public class P26RemoveDuplicatesFromSortedArray {
     public static void main(String[] args) {
         int arr[] = {1,1,1,2,3,3,3,4,5,5,5};

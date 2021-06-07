@@ -58,7 +58,7 @@
 // 👍 834 👎 0
 
 package com.lucky.leetCode.editor.cn;
-
+//Java:移除元素
 public class P27RemoveElement {
     public static void main(String[] args) {
         int[] arr ={1,2,3,3,4};

@@ -34,7 +34,7 @@ package com.lucky.leetCode.editor.cn;
 
 import java.util.HashMap;
 import java.util.Map;
-
+// Java: 删除排序链表中的重复元素
 public class P83RemoveDuplicatesFromSortedList {
     public static void main(String[] args) {
         ListNode node = new ListNode(1);

@@ -24,7 +24,7 @@
 // 👍 754 👎 0
 
 package com.lucky.leetCode.editor.cn;
-
+//Java: 实现 strStr()
 public class P28ImplementStrstr {
   public static void main(String[] args) {
     int i = new Solution().strStr("", null);

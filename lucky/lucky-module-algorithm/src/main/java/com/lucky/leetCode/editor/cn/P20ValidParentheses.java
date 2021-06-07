@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+//Java: 有效的括号
 public class P20ValidParentheses {
   public static void main(String[] args) {
     String str = "()";

@@ -30,7 +30,7 @@
 // 👍 301 👎 0
 
 package com.lucky.leetCode.editor.cn;
-
+//Java: 最后一个单词的长度
 public class P58LengthOfLastWord {
     public static void main(String[] args) {
         System.out.println(new Solution().lengthOfLastWord("Hello World"));

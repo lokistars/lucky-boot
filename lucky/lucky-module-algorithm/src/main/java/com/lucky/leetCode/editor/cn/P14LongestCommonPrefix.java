@@ -31,7 +31,7 @@
 // 👍 1513 👎 0
 
 package com.lucky.leetCode.editor.cn;
-
+// Java: 最长公共前缀
 public class P14LongestCommonPrefix {
   public static void main(String[] args) {
     String arr[] = {};

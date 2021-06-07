@@ -29,7 +29,7 @@
 // 👍 876 👎 0
 
 package com.lucky.leetCode.editor.cn;
-
+//Java: 搜索插入位置
 public class P35SearchInsertPosition {
     public static void main(String[] args) {
         int[] arr ={1,3,5};
