@@ -76,9 +76,8 @@ public class SelectionSort {
                     break;
                 }
             }
-            /*for (int j = i; j >0 ; j--) {
-                if (arr[j] <arr[j-1]){
-                }
+            /*for (int j =i-1; j >=0 && arr[j] >arr[j+1]; j--) {
+                swap(nums,j,j+1)
             }*/
         }
     }
