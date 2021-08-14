@@ -25,7 +25,22 @@ public class SelectionSort {
     }
 
     /**
-     * 选着排序
+     *  依次比较相邻的两个数，将小数放在前面，大数放在后面
+     * @param arr
+     */
+    public static void BubblingSort(int[] arr){
+        for (int i = 0; i < arr.length-1; i++) {
+            //第一个元素和第二个匹配,比他大进行交换
+            for (int j= 0; j < arr.length-1; j++) {
+                if(arr[j]>arr[j+1]){
+                    swap(arr,j, j+1);
+                }
+            }
+        }
+    }
+
+
+    /**
      * 第一个数和第二个数进行比较 如果比他大挪到后面的位置 直到最大的那个数排在最后
      * @param arr
      */
@@ -44,24 +59,7 @@ public class SelectionSort {
     }
 
     /**
-     *  冒泡排序
-     *  依次比较相邻的两个数，将小数放在前面，大数放在后面
-     * @param arr
-     */
-    public static void BubblingSort(int[] arr){
-        for (int i = 0; i < arr.length-1; i++) {
-            //第一个元素和第二个匹配,比他大进行交换
-            for (int j= 0; j < arr.length-1; j++) {
-                if(arr[j]>arr[j+1]){
-                    swap(arr,j, j+1);
-                }
-            }
-        }
-    }
-
-    /**
-     * 插入排序
-     * 将一个数据插入到已经排好序的有序数据中,从而得到一个新的、个数加一的有序数据
+     * 将一个数据插入到已经排好序的有序数据中,从而得到一个新的、个数加一的有序数据插入
      * 将一个数想前一个数比较 比他大或者小(自定义规则), 互换位置,如条件不成立 不需要互换位置, 因为之前的数是有序的
      * @param arr
      */
@@ -101,7 +99,6 @@ public class SelectionSort {
      * 归并排序
      */
     static class MergeSort{
-
         /**
          *  arr数组 left - right 有序  递归方式
          * @param arr
@@ -151,14 +148,23 @@ public class SelectionSort {
         }
 
         public void merge(int[] arr,int left,int mid,int right){
+            int ans = 0;
+            // 计算出一个数在右边有多少个数*2后依然小于这个数。
+            int winR = mid+1;
+            for (int i = 0; i <= mid; i++) {
+                while (winR <= right && arr[i] > (arr[winR]*2)){
+                    winR++;
+                }
+                ans += winR -mid -1;
+            }
             // 定义一个数组 存放 left - right 的数
             int[] arrCopy = new int[(right -left) +1];
             // 定义两个指针 左组数 l  右组数 r
-            int i = 0,l = left,r= mid+1,ans = 0;
+            int i = 0,l = left,r= mid+1;
             // 判断 arr 的left 数和right 数那个大 拷贝谁
             while (l<=mid && r<= right){
                 // 计算小和问题 右组数有多少个大于 arr[l] 右组数 减去当前指针+1 等于当前个数
-                // 数组中有多少个逆序对 小于更改大于
+                // 数组中有多少个逆序对 小于更改大于 不需乘以他的个数
                 ans += arr[l] < arr[r]?arr[l]*(right-r+1):0;
                 // 如果左边数小于右边数 拷贝左边
                 arrCopy[i++] = arr[l] < arr[r]?arr[l++]:arr[r++];
