@@ -237,12 +237,12 @@ public class Sorted {
             int less = L-1; // 左边界
             int more = R;   // 右边界
             while (L < more){ //从L开始小于右边界
-                if (arr[L] == arr[R]){
+                if (arr[L] == arr[R]){ // 如果当前数等于目标数当前数跳下一个
                     L++;
-                }else if(arr[L]<arr[R]){
+                }else if(arr[L]<arr[R]){ // 当前数跳下一个左边界向右扩
                     swap(arr,L++,++less);
                 }else{
-                    swap(arr,L,--more);
+                    swap(arr,L,--more);// 右边界向左扩
                 }
             }
             swap(arr,more,R);
