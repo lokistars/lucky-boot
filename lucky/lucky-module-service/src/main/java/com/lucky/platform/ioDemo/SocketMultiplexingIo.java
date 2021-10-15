@@ -106,7 +106,7 @@ public class SocketMultiplexingIo {
                     // 有人写 send -queue 队列只要是空的,一定会给你返回可以写的事件
                     //
                     else if(key.isWritable()){
-                        key.cancel(); //踢出文件描述符
+                        key.cancel(); //踢出文件描述符, 取消注入
 
                     }
                 }

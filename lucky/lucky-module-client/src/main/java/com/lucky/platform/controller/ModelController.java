@@ -2,10 +2,7 @@ package com.lucky.platform.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lucky.platform.annotation.CheckSession;
-import com.lucky.platform.entity.ModelPage;
-import com.lucky.platform.entity.city;
 import com.lucky.platform.service.CityService;
-import com.lucky.platform.service.ModelPageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +20,10 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/config")
 @Api(value = "/config", description = "User 相关操作")
 public class ModelController {
+
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private ModelPageService modelPageService;
 
     private CityService cityService;
 
@@ -43,14 +39,6 @@ public class ModelController {
         return cities;
     }
 
-    @PostMapping("/model")
-    @ApiOperation(value = "/model", notes = "Model")
-    public Map ModelPage() {
-        Map map = new HashMap();
-        List<ModelPage> all = modelPageService.findAll();
-        map.put("page", all);
-        return map;
-    }
 
     @PostMapping("/query")
     @ApiOperation(value = "/model", notes = "Model")

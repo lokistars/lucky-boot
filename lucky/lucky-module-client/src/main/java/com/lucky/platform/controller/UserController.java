@@ -33,5 +33,11 @@ public class UserController {
         //List<User> login = userService.login(username, password);
         return "登录失败";
     }
+
+
+    @GetMapping("/doLock")
+    public void doLock(User user) {
+        userService.doLock(user);
+    }
 }
 

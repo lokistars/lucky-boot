@@ -33,12 +33,6 @@ public class RedisConfig {
     private int database;
     @Value("${spring.redis.timeout}")
     private int timeout;
-    @Value("${spring.redis.pool.max-idle}")
-    private int maxIdle;
-    @Value("${spring.redis.pool.max-wait}")
-    private long maxWaitMillis;
-    @Value("${spring.redis.pool.max-active}")
-    private int maxTotal;
 
 
     @Bean

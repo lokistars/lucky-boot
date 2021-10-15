@@ -1,5 +1,5 @@
 server:
-  port: 6005
+  port: 5002
 spring:
   application:
     # 服务注册应用名称,它是构成 Nacos 配置管理 dataId字段的一部分
@@ -10,11 +10,11 @@ spring:
     name: nacos
   cloud:
     nacos:
-      # Nacos server 的地址
-      server-addr: localhost:8848
+      # nacos server 的地址
+      server-addr: 10.10.11.115:8848
       config:
+        prefix: lucky
         file-extension: yml
-        prefix: ${spring.application.name}
 #监控
 management:
   endpoints:

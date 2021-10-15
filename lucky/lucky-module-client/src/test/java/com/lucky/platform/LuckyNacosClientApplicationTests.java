@@ -1,6 +1,5 @@
 package com.lucky.platform;
 
-import com.lucky.platform.service.ModelPageService;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import org.junit.jupiter.api.Test;
@@ -18,12 +17,6 @@ class LuckyNacosClientApplicationTests {
 
     @Autowired
     private RedisTemplate redisTemplate;
-
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private ModelPageService modelPageService;
 
     @Test
     void contextLoads() {

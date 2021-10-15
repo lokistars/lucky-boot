@@ -1,8 +1,5 @@
 package com.lucky.platform.service;
 
-import com.lucky.platform.entity.city;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Map;
 
@@ -11,5 +8,5 @@ import java.util.Map;
  */
 public interface CityService {
 
-    public List<Map<String, Object>> cityList();
+    List<Map<String, Object>> cityList();
 }

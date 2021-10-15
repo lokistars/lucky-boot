@@ -30,6 +30,8 @@
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
         <nacos.version>2.2.1.RELEASE</nacos.version>
         <mysql.version>8.0.11</mysql.version>
+        <jedis.version>3.3.0</jedis.version>
+        <redisson.version>3.16.1</redisson.version>
         <druid.version>1.1.22</druid.version>
         <mybatis.version>2.1.2</mybatis.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
@@ -41,6 +43,8 @@
         <jjwt.version>0.11.1</jjwt.version>
         <zookeeper.version>3.6.1</zookeeper.version>
         <netty.version>4.1.61.Final</netty.version>
+        <protobuf.version>3.13.0</protobuf.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
 
     <dependencies>
@@ -67,6 +71,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <!--druid 数据源 -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -96,12 +114,12 @@
         </dependency>
 
         <!--SpringBoot 热部署-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
-        </dependency>
+        </dependency>-->
 
 
     </dependencies>
@@ -131,11 +149,21 @@
     </dependencyManagement>-->
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/**.xml</include>
+                    <include>**/**.yml</include>
+                </includes>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>

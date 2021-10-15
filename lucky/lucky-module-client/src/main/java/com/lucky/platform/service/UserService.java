@@ -18,4 +18,10 @@ import java.util.List;
 
 public interface UserService extends IService<User>, UserDetailsService {
 
+    /**
+     * 模拟分布式锁,抢单
+     * @param user
+     * @return
+     */
+    User doLock(User user);
 }
