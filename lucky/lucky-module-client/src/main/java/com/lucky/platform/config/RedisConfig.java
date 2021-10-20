@@ -4,6 +4,9 @@ import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.api.StatefulRedisConnection;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +20,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @RefreshScope
@@ -97,4 +99,14 @@ public class RedisConfig {
         redisClient.setJedisPool(pool);
         return redisClient;
     }*/
+
+    @Bean
+    public RedissonClient redissonClient(){
+        System.out.println("password:"+password+"redis://"+host+":"+port);
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://"+host+":"+port)
+                .setPassword(password)
+                .setDatabase(0);
+        return Redisson.create(config);
+    }
 }

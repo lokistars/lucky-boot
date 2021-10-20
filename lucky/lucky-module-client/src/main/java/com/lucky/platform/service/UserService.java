@@ -2,10 +2,7 @@ package com.lucky.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lucky.platform.entity.User;
-import com.lucky.platform.mapper.UserMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
-import java.util.List;
 
 /**
  * <p>

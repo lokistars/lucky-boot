@@ -5,14 +5,19 @@ import com.lucky.platform.entity.User;
 import com.lucky.platform.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.platform.service.UserService;
+import org.redisson.RedissonRedLock;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -34,7 +39,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private MysqlLock lock;
 
-    private ThreadLocal<User> userLock = new ThreadLocal<>();
+    private final ThreadLocal<User> userLock = new ThreadLocal<>();
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     /**
      * 认证业务
@@ -82,6 +93,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 log.info("redisson锁");
                 type = redissonLock(user);
                 break;
+            case 5:
+                log.info("redissonRed锁");
+                type = redissonRedLock(user);
+                break;
             default:
             log.info("未找到");
         }
@@ -117,6 +132,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUserName("admin");
         user.setPassword("admin");
         user.setCreateTime(new Date());
+        userLock.remove();
         userLock.set(user);
         lock.setUserThreadLocal(userLock);
         lock.lock();
@@ -130,19 +146,55 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     private  boolean redisLock(User user){
+        /*
+         * 加锁 通过redis setNx设置 成功返回1 不成功返回 0
+         * 防止程序允许一般服务停止, 增加超时时间,超时时间设置和值得设置是原子性
+         * 防止出现程序为未执行完毕 锁被释放了,开启一个子线程 n/3，续上超时时间
+         * finally  先判断是不是自己的锁 在解锁
+         */
         return  putUser(user.getId());
     }
 
-    private  boolean redissonLock(User user){
+    private boolean redissonLock(User user) {
+        final String str = user.getId() + "";
+        boolean type = false;
+        final RLock lock = redissonClient.getLock(str.intern());
+        try {
+            // 加锁 此代码默认 设置key 超时时间30秒，过10秒，再延时
+            lock.lock();
+            type = putUser(user.getId());
+        } finally {
+            lock.unlock();
+        }
+        return type;
+    }
 
-        return  putUser(user.getId());
+
+    private boolean redissonRedLock(User user) {
+        /*
+         * 红锁 redissonClient 是多个客户端
+         */
+        final String str = user.getId() + "";
+        boolean type = false;
+        final RLock lock1 = redissonClient.getLock(str.intern());
+        final RLock lock2 = redissonClient.getLock(str.intern());
+        final RLock lock3 = redissonClient.getLock(str.intern());
+        RedissonRedLock redLock = new RedissonRedLock(lock1,lock2,lock3);
+        try {
+            // 加锁 此代码默认 设置key 超时时间30秒，过10秒，再延时
+            redLock.lock();
+            type = putUser(user.getId());
+        } finally {
+            redLock.unlock();
+        }
+        return type;
     }
 
 
     private boolean putUser(Integer userId){
         final User user = userMapper.selectById(userId);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
