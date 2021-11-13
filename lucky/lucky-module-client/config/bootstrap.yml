@@ -15,7 +15,7 @@ spring:
     ## 数据库配置【数据库驱动｜数据库访问URL｜用户名｜数据库密码】
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.10.11.115:3306/lucky?useUnicode=true&characterEncoding=utf8&serverTimezone=Hongkong&zeroDateTimeBehavior=round&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://119.91.148.176:3306/lucky?useUnicode=true&characterEncoding=utf8&serverTimezone=PRC&allowMultiQueries=true&useSSL=false
     username: root
     password: kdbase
     druid:

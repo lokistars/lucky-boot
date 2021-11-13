@@ -5,12 +5,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
+ * 可以使用jdk自带的 Observer java.util
  * @program: lucky
  * @description: 观察者模式, 主要角色  抽象观察者  抽象被观察者, 真实观察者，真实被观察者
  * @author: loki
  * @create: 2020-11-05 09:52
  **/
-public class Observer {
+public class Observer{
     public static void main(String[] args) {
         UpEvent up = new UpEvent();
         // 订阅消息
@@ -22,7 +23,7 @@ public class Observer {
 }
 
 /**
- * 抽象
+ * 抽象事件
  */
 interface Event{
     /**
