@@ -42,10 +42,10 @@ public class P83RemoveDuplicatesFromSortedList {
         node.next.next = new ListNode(2);
         node.next.next.next = new ListNode(3);
         node.next.next.next.next = new ListNode(3);
-        ListNode node1 = new Solution().deleteDuplicates(node);
-        while (node1!= null){
-            System.out.println(node1.val);
-            node1 = node1.next;
+        ListNode Node = new Solution().deleteDuplicates(node);
+        while (Node!= null){
+            System.out.println(Node.val);
+            Node = Node.next;
         }
     }
 

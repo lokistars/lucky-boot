@@ -60,8 +60,8 @@ public class P21MergeTwoSortedLists {
     P21MergeTwoSortedLists p21 = new P21MergeTwoSortedLists();
     Solution solution = p21.new Solution();
     ListNode node = new ListNode(1, new ListNode(3));
-    ListNode node1 = new ListNode(2, new ListNode(4));
-    ListNode listNode = solution.mergeTwoLists(node, node1);
+    ListNode Node = new ListNode(2, new ListNode(4));
+    ListNode listNode = solution.mergeTwoLists(node, Node);
     System.out.println(listNode);
   }
   public static int f(){
