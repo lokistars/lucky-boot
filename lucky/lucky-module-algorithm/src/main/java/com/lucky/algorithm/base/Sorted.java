@@ -28,12 +28,11 @@ public class Sorted {
 
     /**
      * 依次比较相邻的两个数，将小数放在前面，大数放在后面
-     *
+     * 第一个元素和第二个匹配,比他大进行交换
      * @param arr
      */
     public static void BubblingSort(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
-            //第一个元素和第二个匹配,比他大进行交换
             for (int j = 0; j < arr.length - 1; j++) {
                 if (arr[j] > arr[j + 1]) {
                     swap(arr, j, j + 1);

@@ -1,7 +1,5 @@
 package com.lucky.lesson;
 
-import org.w3c.dom.Node;
-
 /**
  * 基础的数据结构
  * @author: Loki
