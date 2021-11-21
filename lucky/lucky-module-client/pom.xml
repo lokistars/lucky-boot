@@ -40,6 +40,13 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- shardingSphere -->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+            <version>${shardingSphere.version}</version>
+        </dependency>
+
         <!--redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

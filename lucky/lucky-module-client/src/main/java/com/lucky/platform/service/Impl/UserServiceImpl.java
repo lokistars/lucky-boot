@@ -16,7 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -106,6 +109,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.error("用户：{}",user.getVersion()+"抢单失败");
         }
         return user;
+    }
+
+    @Override
+    public List<User> getUser(User user) {
+        final List<User> users = userMapper.selectBatchIds(Collections.singletonList(user.getId()));
+        return users;
+    }
+
+    @Override
+    public int addUser(User user) {
+        return userMapper.insert(user);
     }
 
     private  boolean noLock(User user){

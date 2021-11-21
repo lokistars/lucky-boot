@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lucky.platform.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户登录 服务类
@@ -21,4 +23,8 @@ public interface UserService extends IService<User>, UserDetailsService {
      * @return
      */
     User doLock(User user);
+
+    List<User> getUser(User user);
+
+    int addUser(User user);
 }
