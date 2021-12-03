@@ -1,5 +1,7 @@
 package com.lucky.lesson;
 
+import com.lucky.design.Node;
+
 /**
  * 基础的数据结构
  * @author: Loki
@@ -67,17 +69,6 @@ public class Lesson3 {
 
     }
 
-
-
-
-
-    static class Node{
-        int val;
-        Node next;
-        public Node(int data){
-            val =data;
-        }
-    }
 
     class DoubleNode {
         int val;

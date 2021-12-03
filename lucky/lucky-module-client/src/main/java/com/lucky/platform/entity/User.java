@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +27,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @ApiModel(value = "TUser对象", description = "用户登录")
 @TableName("t_user")
-public class User implements UserDetails {
+public class User extends Model<User> implements UserDetails  {
 
     private static final long serialVersionUID = 1L;
 

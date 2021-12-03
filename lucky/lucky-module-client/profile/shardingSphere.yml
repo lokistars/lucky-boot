@@ -1,32 +1,47 @@
 spring:
+  # SQL 语句中有>，>=, <=，<，=，IN 和 BETWEEN AND 操作符，都可以应用此分片策略
   shardingsphere:
     datasource:
       names: ds0,ds1
-      ds0: !!org.apache.commons.dbcp.BasicDataSource
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://192.168.1.9:3306/lucky?useUnicode=true&characterEncoding=utf8&serverTimezone=PRC&allowMultiQueries=true&allowPublicKeyRetrieval=true&useSSL=false
         username: root
         password: lucky
-      ds1: !!org.apache.commons.dbcp.BasicDataSource
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://119.91.148.176:3306/lucky?useUnicode=true&characterEncoding=utf8&serverTimezone=PRC&allowMultiQueries=true&allowPublicKeyRetrieval=true&useSSL=false
         username: root
         password: lucky
-    shardingRule:
+    sharding:
       tables:
         t_user:
-          actualDataNodes: ds${0..1}.t_user${0..1}
-          databaseStrategy:
+          # 实际的数据节点
+          actualDataNodes: ds$->{0..1}.t_user$->{0..1}
+          databaseStrategy:  #指定库的分片策略
             inline:
               shardingColumn: id
-              algorithmExpression: ds${id % 2}
-          tableStrategy:
+              algorithmExpression: ds$->{id % 2}
+              # 分库分片算法
+              #precise-algorithm-class-name:
+          tableStrategy:  #指定表的分片策略
             inline:
               shardingColumn: id
-              algorithmExpression: t_user${order_id % 2}
+              algorithmExpression: t_user$->{id % 2}
           keyGenerator:
             type: SNOWFLAKE
             column: id
+      defaultDataSourceName: ds0  #默认数据源,未分片的表默认执行库
+      defaultDatabaseStrategy:    #默认分库策略
+        standard:
+          sharding-column: id
+        inline:
+          sharding-column: id
+          algorithm-expression: ds$->{id % 2}
+      binding-tables:             #绑定表
+        - t_user
 
 #      bindingTables:
 #        - t_order,t_order_item
@@ -39,6 +54,6 @@ spring:
 #      defaultKeyGenerator:
 #        type: SNOWFLAKE
 #        column: order_id
-#
-#    props:
-#      sql.show: true
+#   系统属性 显示正常的sql语句
+    props:
+      sql.show: true

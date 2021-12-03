@@ -118,8 +118,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public int addUser(User user) {
-        return userMapper.insert(user);
+    public int addUser() {
+        int len = 10;
+        User user = new User();
+        user.setPassword("admin1");
+        user.setUserStats(1);
+        for (int i = 1; i <= len; i++) {
+            user.setId(i);
+            user.setUserName("admin"+i);
+            user.setVersion(i);
+            userMapper.insert(user);
+        }
+        return len;
     }
 
     private  boolean noLock(User user){

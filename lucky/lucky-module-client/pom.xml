@@ -59,11 +59,11 @@
             <version>${redisson.version}</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!--Lettuce需要 依赖 连接池-->
         <dependency>

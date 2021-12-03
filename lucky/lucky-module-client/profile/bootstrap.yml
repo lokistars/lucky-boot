@@ -4,7 +4,7 @@ spring:
     password: 1234
     port: 6379
     database: 0
-    jedis:
+    lettuce:
       pool:
         max-active: 8
         min-idle: 0

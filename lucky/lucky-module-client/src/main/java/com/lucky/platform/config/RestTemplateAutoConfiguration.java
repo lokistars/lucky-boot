@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Nuany
+ * @author loki
  */
 @Configuration
 public class RestTemplateAutoConfiguration {
@@ -45,9 +45,8 @@ public class RestTemplateAutoConfiguration {
 
     /**
      * 功能描述： 初始化请求工厂
-     *
      * @param
-     * @author wangcanfeng
+     * @author loki
      * @time 2020/10/29
      * @since v1.0
      **/
@@ -62,7 +61,7 @@ public class RestTemplateAutoConfiguration {
      * 功能描述：  设置数据转换器，
      *
      * @param
-     * @author wangcanfeng
+     * @author loki
      * @time 2020/10/29
      * @since v1.0
      **/

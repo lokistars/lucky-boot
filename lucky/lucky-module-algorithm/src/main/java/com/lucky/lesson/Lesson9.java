@@ -1,5 +1,7 @@
 package com.lucky.lesson;
 
+import com.lucky.design.Node;
+
 /**
  * 链表相关
  * 1、输入链表头节点,奇数长度返回中点,偶数长度返回上中点.
@@ -96,12 +98,4 @@ public class Lesson9 {
         test4(node);
     }
 
-
-    static class Node{
-        Integer val ;
-        Node next;
-        public Node(Integer val) {
-            this.val = val;
-        }
-    }
 }

@@ -1,15 +1,14 @@
 package com.lucky.platform.controller;
 
 import com.lucky.platform.ClientApplication;
+import com.lucky.platform.entity.User;
 import com.lucky.platform.service.CityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author: Loki
@@ -22,11 +21,15 @@ public class TestController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
     @Test
     public void test1(){
-        final List<Map<String, Object>> list = cityService.cityList();
+        User user = new User();
+        user.setId(1);
+        user.setUserName("ces");
 
-        System.out.println(list);
-
+        redisTemplate.opsForValue().set("123","啊啊");
     }
 }

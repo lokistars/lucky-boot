@@ -26,5 +26,5 @@ public interface UserService extends IService<User>, UserDetailsService {
 
     List<User> getUser(User user);
 
-    int addUser(User user);
+    int addUser();
 }
