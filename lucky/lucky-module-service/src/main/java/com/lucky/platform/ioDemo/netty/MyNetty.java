@@ -87,6 +87,7 @@ public class MyNetty {
 
     /**
      * 服务端
+     * 游戏地址http://cdn0001.afrxvk.cn/hero_story/demo/step010/index.html?serverAddr=172.16.11.184:9014&userId=1
      */
     private static void serverMode() throws Exception{
         // 线程组 一个Netty服务端启动时，通常会有两个NioEventLoopGroup：
