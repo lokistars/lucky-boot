@@ -36,7 +36,7 @@
         <mybatis.version>2.1.2</mybatis.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <fastjson.version>1.2.72</fastjson.version>
-        <swagger2.version>2.10.5</swagger2.version>
+        <swagger2.version>3.0.3</swagger2.version>
         <itextpdf.version>5.5.13.1</itextpdf.version>
         <hutool.version>5.4.0</hutool.version>
         <mail.version>1.6.2</mail.version>
