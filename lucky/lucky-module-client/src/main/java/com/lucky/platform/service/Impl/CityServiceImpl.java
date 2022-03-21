@@ -1,6 +1,7 @@
 package com.lucky.platform.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.platform.entity.AreasTown;
 import com.lucky.platform.entity.User;
 import com.lucky.platform.entity.city;
@@ -21,7 +22,7 @@ import java.util.Map;
  * @author 53276
  */
 @Service
-public class CityServiceImpl implements CityService {
+public class CityServiceImpl extends ServiceImpl<CityMapper, city> implements CityService  {
     private static final Logger log = LoggerFactory.getLogger(CityServiceImpl.class);
 
     @Autowired
@@ -33,6 +34,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public List<Map<String, Object>> cityList() {
+        final List<city> list = lambdaQuery().list();
         List<city> cities = cityMapper.selectList(null);
         QueryWrapper<AreasTown> wrapper = new QueryWrapper<>();
         mapper.delete(wrapper);

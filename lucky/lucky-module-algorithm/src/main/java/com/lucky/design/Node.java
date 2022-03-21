@@ -12,6 +12,7 @@ public class Node {
     public Node left;
     public Node right;
     public List<Node> children;
+    public Node parent;
     public Node(Integer val) {
         this.val = val;
     }

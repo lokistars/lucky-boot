@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Duration;
 
 /**
- * @author 53276
+ * @author loki
  */
 @SpringBootApplication
 @EnableDiscoveryClient

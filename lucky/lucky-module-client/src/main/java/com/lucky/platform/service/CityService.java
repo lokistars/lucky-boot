@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author 53276
  */
-public interface CityService {
+public interface CityService extends IService<city>{
 
     List<Map<String, Object>> cityList();
 }
