@@ -3,66 +3,13 @@ server:
 spring:
   application:
     name: gateway
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: config #来定位配置服务器。
-      label: master
-      name: gateway
-      profile: dev
-eureka:
-  client:
-    register-with-eureka: true #是否将自己注入eureka
-    service-url:
-      defaultZone: http://localhost:6001/eureka
-  instance:
-    metadata-map:
-      version: v1
-    hostname: localhost #eureka服务端实例名称
-    prefer-ip-address: true #访问路径可以显示IP地址
-    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
-    #续约间隔 默认30秒 估算每天能承受多大得访问量(向server发送心跳) 续约间隔*服务实例数
-    lease-renewal-interval-in-seconds: 30
+
 logging:
   level:
     com.netflix: debug
     #org.springframework: DEBUG
 
-zuul:
-  # 前缀
-  prefix: /api
-  # 是否移除前缀
-  strip-prefix: true
-  routes:
-    # eureka 服务名配置方式
-    client:
-      path: /clients/**
-      serviceId: CLIENT
-      #使用url访问负载均衡就失效了。 ribbon 失效
-      #url: http://localhost:9002/
-#    client: /zuul-client/**
-    # 敏感
-    # api-passenger: /zuul-client/**
 
-    #忽略配置 忽略掉服务名访问只能使用自定义的
-#  ignored-services:
-#    - client
-
-# 负载均衡配置
-#zuul:
-#  routes:
-#    #此处名字随便取
-#    custom-zuul-name:
-#      path: /zuul-custom-name/**
-#      service-id: no-eureka-api-driver
-##不是eureka的service-id，我们自定义的，随便写的
-#no-eureka-api-driver:
-#  ribbon:
-#    listOfServers: localhost:9003,localhost:9002
-#ribbon:
-#  eureka:
-#    enabled: false
 
 
 management:

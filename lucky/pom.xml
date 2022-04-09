@@ -12,11 +12,11 @@
     </parent>
 
     <groupId>com.lucky.platform</groupId>
-    <artifactId>lucky.module</artifactId>
+    <artifactId>lucky</artifactId>
     <version>2.3.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>lucky.module</name>
+    <name>lucky</name>
 
     <modules>
         <module>lucky-module-client</module>
@@ -49,6 +49,7 @@
     </properties>
 
     <dependencies>
+
         <!-- nacos 服务注册发现 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -62,15 +63,16 @@
             <version>${nacos.version}</version>
         </dependency>
 
-        <!-- starter-web -->
+        <!--  配置处理  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
-        <!--Spring security -->
+
+        <!--监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <dependency>
@@ -84,34 +86,6 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <!--druid 数据源  使用druid-spring-boot-starter 可能会出现问题-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>${druid.version}</version>
-        </dependency>
-
-        <!-- mysql-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-
-        <!--mybatis-spring-->
-        <!--<dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis.version}</version>
-        </dependency>-->
-
-        <!--mybatis-Plus -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
         </dependency>
 
         <!--SpringBoot 热部署-->

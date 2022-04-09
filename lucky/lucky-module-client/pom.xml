@@ -5,7 +5,7 @@
     <!-- -->
     <parent>
         <groupId>com.lucky.platform</groupId>
-        <artifactId>lucky.module</artifactId>
+        <artifactId>lucky</artifactId>
         <version>2.3.3-SNAPSHOT</version>
     </parent>
 
@@ -23,10 +23,10 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>-->
 
+        <!-- starter-web -->
         <dependency>
-            <groupId>com.lucky.platform</groupId>
-            <artifactId>lucky-module-common</artifactId>
-            <version>2.3.3-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -34,10 +34,10 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!--监控-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>com.lucky.platform</groupId>
+            <artifactId>lucky-module-common</artifactId>
+            <version>2.3.3-SNAPSHOT</version>
         </dependency>
 
         <!-- shardingSphere -->
@@ -47,29 +47,6 @@
             <version>${shardingSphere.version}</version>
         </dependency>-->
 
-        <!--redis-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>${redisson.version}</version>
-        </dependency>
-
-        <!--<dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>${jedis.version}</version>
-        </dependency>-->
-
-        <!--Lettuce需要 依赖 连接池-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-        </dependency>
         <!-- zookeeper -->
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
@@ -125,6 +102,7 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>${swagger2.version}</version>
         </dependency>
+
         <!--发送邮件-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

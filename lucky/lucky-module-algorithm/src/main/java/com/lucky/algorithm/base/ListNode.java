@@ -3,7 +3,7 @@ package com.lucky.algorithm.base;
 import java.util.ArrayList;
 
 /**
- * @program: lucky.module
+ * @program: lucky
  * @description: 链表 实现
  * @author: Loki
  * @create: 2021-03-27 13:20
