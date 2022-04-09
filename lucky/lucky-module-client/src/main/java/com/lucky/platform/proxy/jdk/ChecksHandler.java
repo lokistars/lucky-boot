@@ -1,8 +1,10 @@
 package com.lucky.platform.proxy.jdk;
 
-import com.lucky.platform.entity.User;
+
 import com.lucky.platform.service.Impl.UserServiceImpl;
 import com.lucky.platform.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -13,6 +15,7 @@ import java.lang.reflect.Proxy;
  * @data: 2021-12-18 10:28
  **/
 public class ChecksHandler implements InvocationHandler {
+    private static final Logger log = LoggerFactory.getLogger(ChecksHandler.class);
     /**
      * 代理类中的真实对象
      */
@@ -52,6 +55,7 @@ public class ChecksHandler implements InvocationHandler {
     }
 
     public static void main(String[] args) {
+        log.info("123");
         ChecksHandler handler = new ChecksHandler();
         UserService proxy =(UserService) handler.getProxy(new UserServiceImpl());
         System.out.println(proxy);
