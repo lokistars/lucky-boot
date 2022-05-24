@@ -11,6 +11,7 @@ import org.redisson.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @author Loki
  */
 @Configuration
+@ConditionalOnProperty(prefix="spring.profiles",name = "active",havingValue = "dev")
 public class RedisConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(RedisConfig.class);
 

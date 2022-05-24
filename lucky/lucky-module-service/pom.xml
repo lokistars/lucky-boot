@@ -30,6 +30,12 @@
             <version>${protobuf.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.shyiko</groupId>
+            <artifactId>mysql-binlog-connector-java</artifactId>
+            <version>${binlog.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

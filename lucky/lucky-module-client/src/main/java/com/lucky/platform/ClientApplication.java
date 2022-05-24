@@ -23,17 +23,9 @@ import java.time.Duration;
 @MapperScan("com.lucky.platform.mapper")
 public class ClientApplication {
     private static final Logger log = LoggerFactory.getLogger(ClientApplication.class);
-    /*@Autowired
-    private RestTemplateBuilder builder;
-    @Bean
-    public RestTemplate restTemplate(){
-        //建立连接所用时间  15秒  服务器读取到可用资源所用的时间 15秒
-        return builder.setConnectTimeout(Duration.ofSeconds(15)).setReadTimeout(Duration.ofSeconds(15)).build();
-    }*/
 
     public static void main(String[] args) {
         SpringApplication.run(ClientApplication.class, args);
         log.info("ClientApplication -- start");
     }
-
 }

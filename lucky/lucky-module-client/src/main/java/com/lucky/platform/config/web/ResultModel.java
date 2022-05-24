@@ -1,7 +1,4 @@
-package com.lucky.platform.web;
-
-import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package com.lucky.platform.config.web;
 
 import java.io.Serializable;
 

@@ -3,14 +3,12 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.lucky.platform.web.interceptor;
+package com.lucky.platform.config.web;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.xml.bind.ValidationException;
 
-import com.lucky.platform.web.ResultModel;
-import com.lucky.platform.web.enumtype.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,6 +29,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Set;
 
+/**
+ * interceptor
+ * @author Loki
+ */
 @ControllerAdvice
 @ResponseBody
 public class GlobalExceptionAdvice {
