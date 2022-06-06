@@ -57,7 +57,7 @@ package com.lucky.leetCode.editor.cn;
 //Java: 最大子序和
 public class P53MaximumSubarray {
     public static void main(String[] args) {
-        int[] arr = {};
+        int[] arr = {-2,1,-3,4,-1,2,1,-5,4};
         System.out.println(new Solution().maxSubArray(arr));
     }
 
