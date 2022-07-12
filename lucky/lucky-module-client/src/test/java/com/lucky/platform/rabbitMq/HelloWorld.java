@@ -112,7 +112,24 @@ public class HelloWorld {
      * publish/subscribe 发布订阅模式
      */
     @Test
-    public void publish(){
+    public void publish() throws Exception{
+        // 1.获取连接
+        final Connection connection = RabbitMqUtil.getConnection();
+        // 2.构建Channel
+        final Channel channel = connection.createChannel();
+        // 3.构建交换机
+        channel.exchangeDeclare(RabbitMqUtil.EXCHANGE_NAME,BuiltinExchangeType.FANOUT,false,false,false,null);
+        // 4.构建队列
+        channel.queueDeclare(RabbitMqUtil.PUBSUB_QUEUE,false,false,false,null);
+        // 5.绑定交换机
+        channel.queueBind(RabbitMqUtil.PUBSUB_QUEUE,RabbitMqUtil.EXCHANGE_NAME,"");
+        // 6.发送消息到交换机
+
+        channel.basicPublish(RabbitMqUtil.EXCHANGE_NAME,"",null,"publish/subscribe".getBytes());
+        System.out.println("消息成功发送！！");
+    }
+
+    public void subscribe(){
 
     }
 }

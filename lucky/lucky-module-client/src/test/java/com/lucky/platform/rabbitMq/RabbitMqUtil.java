@@ -20,6 +20,8 @@ public class RabbitMqUtil {
     public static final String TOPIC_QUEUE = "topic";
     public static final String RPC_QUEUE = "rpc";
 
+
+    public static final String EXCHANGE_NAME = "pubsub";
     public static Connection getConnection() throws Exception{
         // 创建connection工厂
         final ConnectionFactory factory = new ConnectionFactory();
