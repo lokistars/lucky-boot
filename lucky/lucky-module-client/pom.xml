@@ -65,6 +65,13 @@
             </exclusions>
         </dependency>
 
+        <!--rabbitmq -->
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>5.13.0</version>
+        </dependency>
+
         <!--kafka-->
         <dependency>
             <groupId>org.apache.kafka</groupId>
