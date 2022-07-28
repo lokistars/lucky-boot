@@ -1,5 +1,3 @@
-server:
-  port: 6090
 spring:
   application:
     # 服务注册应用名称,它是构成 Nacos 配置管理 dataId字段的一部分
@@ -7,11 +5,74 @@ spring:
     # prefix 默认为 spring.application.name 的值，也可以通过配置项 spring.cloud.nacos.config.prefix来配置
     # spring.profiles.active 即为当前环境对应的 profile spring.profiles.active 为空时，对应的连接符 - 也将不存在
     # file-exetension 为配置内容的数据格式，可以通过配置项 spring.cloud.nacos.config.file-extension 来配置。
-    name: nacos
+    name: lucky-gateway
   cloud:
     nacos:
       # nacos server 的地址
       server-addr: 101.43.63.132:8848
+      username: dev
+      password: dev
+      # 服务注册
+      discovery:
+        server-addr: 101.43.63.132:8848
+        namespace: 76f1596d-8d58-404c-adff-30494b5cc784
       config:
+        # 配置名前缀，默认${spring.application.name}
         prefix: gateway
+        # 配置文件格式：默认properties
         file-extension: yml
+        # 指定命名空间：默认public
+        namespace: 76f1596d-8d58-404c-adff-30494b5cc784
+        # 分组
+        group: DEFAULT_GROUP
+        # 超时时间
+        timeout: 50000
+        # 共享配置文件
+        shared-configs:
+          - data-id: application.properties
+
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          #          predicates:
+          #            - Path=pattern,'/'+serviceId.toLowerCase().replace('dms-service-','').replace('dz-service-','')+'/**'
+          filters:
+            #            - SwaggerHeaderFilter
+            - StripPrefix=1
+          include-expression: serviceId matches '^((?!gateway).)*' && serviceId matches '.*-(api|front).*'
+          route-id-prefix:
+      # 路由配置
+      #      routes:
+      #        # 唯⼀路由ID，一般直接用服务名即可
+      #        - id: dms-service-uc
+      #          # URI
+      #          uri: lb://dms-service-uc
+      #          # 路由条件
+      #          predicates:
+      #            # 路径匹配
+      #            - Path=/user/**
+      #          filters:
+      #            # 切掉第一个/前面的，/user
+      #            - StripPrefix=1
+      globalcors:
+        # 跨域配置
+        cors-configurations:
+          '[/**]':
+            # 允许携带认证信息
+            allow-credentials: true
+            # 允许的域名
+            allowed-origins: "*"
+            # 跨域头设置
+            allowed-headers: "*"
+            # 跨域预请求
+            max-age: 1800
+            # 跨域方法
+            allowed-methods:
+              - GET
+                POST
+                DELETE
+                PUT
+                OPTION
+        add-to-simple-url-handler-mapping: true
+      default-filters[0]: DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST

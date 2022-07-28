@@ -44,7 +44,6 @@ public class Sorted {
 
     /**
      * 第一个数和第二个数进行比较 如果比他大挪到后面的位置 直到最大的那个数排在最后
-     *
      * @param arr
      */
     public static void SelectionSorts(int[] arr) {
@@ -64,7 +63,6 @@ public class Sorted {
     /**
      * 将一个数据插入到已经排好序的有序数据中,从而得到一个新的、个数加一的有序数据插入
      * 将一个数想前一个数比较 比他大或者小(自定义规则), 互换位置,如条件不成立 不需要互换位置, 因为之前的数是有序的
-     *
      * @param arr
      */
     public static void insertionSort(int[] arr) {
