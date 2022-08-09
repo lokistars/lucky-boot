@@ -62,7 +62,7 @@ public class HelloWorld {
     public void helloConsumer() throws Exception{
         consumer(RabbitMqUtil.HELLO_QUEUE);
         consumer(RabbitMqUtil.WORK_QUEUE);
-        consumer(RabbitMqUtil.PUBSUB_QUEUE);
+        consumer(RabbitMqUtil.FANOUT_QUEUE);
         consumer(RabbitMqUtil.ROUTING_QUEUE);
         consumer(RabbitMqUtil.TOPIC_QUEUE);
         consumer(RabbitMqUtil.HEADERS_QUEUE);
@@ -131,11 +131,11 @@ public class HelloWorld {
         // 3.构建交换机,交换机名称、交换机类型、交换机是否持久化
         channel.exchangeDeclare(RabbitMqUtil.FANOUT_NAME,BuiltinExchangeType.FANOUT,false,false,false,null);
         // 4.构建队列
-        channel.queueDeclare(RabbitMqUtil.PUBSUB_QUEUE,false,false,false,null);
-        channel.queueDeclare(RabbitMqUtil.PUBSUB_QUEUE1,false,false,false,null);
+        channel.queueDeclare(RabbitMqUtil.FANOUT_QUEUE,false,false,false,null);
+        channel.queueDeclare(RabbitMqUtil.FANOUT_QUEUE1,false,false,false,null);
         // 5.绑定交换机
-        channel.queueBind(RabbitMqUtil.PUBSUB_QUEUE,RabbitMqUtil.FANOUT_NAME,"");
-        channel.queueBind(RabbitMqUtil.PUBSUB_QUEUE1,RabbitMqUtil.FANOUT_NAME,"");
+        channel.queueBind(RabbitMqUtil.FANOUT_QUEUE,RabbitMqUtil.FANOUT_NAME,"");
+        channel.queueBind(RabbitMqUtil.FANOUT_QUEUE1,RabbitMqUtil.FANOUT_NAME,"");
         // 6.发送消息到交换机
         channel.basicPublish(RabbitMqUtil.FANOUT_NAME,"",null,"publish/subscribe".getBytes());
         System.out.println("消息成功发送！！");

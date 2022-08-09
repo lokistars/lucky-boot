@@ -64,8 +64,9 @@ public class RedisConfig {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress("redis://"+redisProperties.getHost()+":"+redisProperties.getPort())
-                .setPassword(redisProperties.getPassword() )
-                .setDatabase(redisProperties.getDatabase());
+                .setPassword(redisProperties.getPassword())
+                .setDatabase(redisProperties.getDatabase())
+                .setConnectionMinimumIdleSize(20);
         return Redisson.create(config);
     }
 }

@@ -18,8 +18,8 @@ public class RabbitMqUtil {
      */
     public static final String HELLO_QUEUE = "hello";
     public static final String WORK_QUEUE = "work";
-    public static final String PUBSUB_QUEUE = "pubsub";
-    public static final String PUBSUB_QUEUE1 = "pubsub1";
+    public static final String FANOUT_QUEUE = "fanout";
+    public static final String FANOUT_QUEUE1 = "fanout1";
     public static final String ROUTING_QUEUE = "routing";
     public static final String TOPIC_QUEUE = "topic";
     public static final String HEADERS_QUEUE = "headers";
@@ -28,7 +28,7 @@ public class RabbitMqUtil {
      * 交换机名字
      */
     public static final String DIRECT_NAME = "direct";
-    public static final String FANOUT_NAME = "pubsub";
+    public static final String FANOUT_NAME = "fanout";
     public static final String TOPIC_NAME = "topic";
     public static final String HEADERS_NAME = "headers";
     public static Connection getConnection() throws Exception{

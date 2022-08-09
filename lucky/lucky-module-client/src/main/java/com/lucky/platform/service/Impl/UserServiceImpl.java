@@ -1,6 +1,7 @@
 package com.lucky.platform.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lucky.platform.config.RabbitMqConfig;
 import com.lucky.platform.entity.User;
 import com.lucky.platform.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,6 +11,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,6 +52,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private RedissonClient redissonClient;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     /**
      * 认证业务
      *
@@ -59,10 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("userName", userName)
-                .eq("user_stats", 0);
-        return userMapper.selectOne(wrapper);
+        return lambdaQuery().eq(User::getUserName,userName).eq(User::getUserStats,0).one();
     }
 
     /**
@@ -128,6 +130,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             user.setUserName("admin"+i);
             user.setVersion(i);
             userMapper.insert(user);
+            rabbitTemplate.convertAndSend(RabbitMqConfig.FANOUT_NAME,"",user);
         }
         return len;
     }
