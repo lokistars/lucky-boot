@@ -1,6 +1,7 @@
 package com.lucky.platform.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.lucky.platform.config.RabbitMqConfig;
 import com.lucky.platform.entity.User;
 import com.lucky.platform.mapper.UserMapper;
@@ -64,6 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        //this.getBaseMapper().selectList(Wrappers.<User>lambdaQuery().eq(User::getUserName,userName));
         return lambdaQuery().eq(User::getUserName,userName).eq(User::getUserStats,0).one();
     }
 

@@ -87,11 +87,11 @@
         </dependency>-->
 
         <!--druid 数据源  使用druid-spring-boot-starter 可能会出现问题-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!-- mysql-->
         <dependency>
@@ -160,5 +160,38 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <!-- Maven 编译插件 -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.build.finalName}</finalName>
+                    <!--<excludeGroupIds>com.dz.open</excludeGroupIds>-->
+                    <mainClass>com.lucky.platform.ClientApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

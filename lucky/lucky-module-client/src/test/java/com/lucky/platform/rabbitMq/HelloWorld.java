@@ -22,7 +22,7 @@ public class HelloWorld {
      * durable: 是否持久化,true 持久化
      * exclusive: 是否排它,true 排它是基于连接可见,该队列仅对首次声明它的连接可见,并在连接断开后自动删除
      * autoDelete: 是否自动删除,true 自动删除最后一个消息消费后队列是否被自动删除
-     * arguments:
+     * arguments:  用来设置队列附加参数，如设置队列的有效期、队列的消息生命周期、消息的最大长度等；
      *  message-ttl:发布到队列的消息在被丢弃之前可以存活多长时间（毫秒）
      *  x-expires:队列在被自动删除之前可以未使用多长时间（毫秒）
      *  x-max-length:队列在开始从其头部删除之前可以包含多少（就绪）消息
@@ -52,8 +52,15 @@ public class HelloWorld {
         AMQP.BasicProperties.Builder basic = new AMQP.BasicProperties().builder();
         basic.expiration("5000");
         basic.deliveryMode(1);  //设置消息持久化, 1:非持久化、2:持久化
-        // 交换机名字、队列名字、参数设置、消息体
-        channel.basicPublish("",RabbitMqUtil.HELLO_QUEUE,basic.build(),message.getBytes());
+        /**
+         * exchange:要将消息发送到的Exchange(交换器)
+         * routingKey:路由Key
+         * mandatory:true 如果mandatory标记被设置
+         * immediate: true 如果immediate标记被设置，注意：RabbitMQ服务端不支持此标记
+         * props:其它的一些属性，如：{@link MessageProperties.PERSISTENT_TEXT_PLAIN}
+         * body:消息内容
+         **/
+        channel.basicPublish("",RabbitMqUtil.HELLO_QUEUE,false,false,basic.build(),message.getBytes());
         System.out.println("消息发送成功");
         System.in.read();
     }
@@ -70,6 +77,8 @@ public class HelloWorld {
     }
     /**
      * 消费者 一个队列可以有多个消费者
+     * 公平分发, 在实际业务中，有些业务处理比较耗时，有些处理耗时不长
+     * 设置消息的流控,费者处理完成之后主动上报 来达到公平分发
      * @throws Exception
      */
     public void consumer(String queue){
@@ -79,17 +88,51 @@ public class HelloWorld {
                 final Channel channel = connection.createChannel();
                 // 为这个通道申明一个队列，如果这个队列不存在，他将在服务器上创建，防止不存在时报错
                 //channel.queueDeclare(queue,false,false,false,null);
-                // 设置消息的流控,一次获取多少条消息
+                /**
+                 * 设置消息的流控,一次获取多少条消息
+                 * prefetchSize:服务器传送最大内容量（以八位字节计算），如果没有限制，则为0
+                 * prefetchCount:服务器每次传递的最大消息数，如果没有限制，则为0；
+                 * global:如果为true,则当前设置将会应用于整个Channel(频道)
+                 **/
                 channel.basicQos(1);
                 final DefaultConsumer consumer = new DefaultConsumer(channel){
                     @Override
                     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                         System.out.println("消费者一号获取消息："+queue +"："+ new String(body,"UTF-8"));
-                        // 手动ack,告诉rabbitmq已经消费了
+                        /**
+                         * 手动ack,告诉rabbitmq已经消费了
+                         * consumerTag:服务器端生成的消费者标识 服务器端向消费者推送消息，消息会携带一个deliveryTag参数，也可以成此参数为消息的唯一标识，是一个递增的正整数
+                         * multiple：true表示确认所有消息，包括消息唯一标识小于等于deliveryTag的消息，false只确认deliveryTag指定的消息
+                         */
                         channel.basicAck(envelope.getDeliveryTag(),false);
+                        /**
+                         * 要求代理重新发送未确认的消息,消息将会重新排队，并且可能会发送给其它的消费者
+                         * requeue:如果为true,消息将会重新入队，可能会被发送给其它的消费者；如果为false,消息将会发送给* 相同的消费者
+                         **/
+                        //channel.basicRecover(true);
+                        /**
+                         * 拒绝接收到的一个或者多个消息
+                         * deliveryTag：接收到消息的唯一标识
+                         * multiple: true表示拒绝所有的消息，包括提供的deliveryTag；false表示仅拒绝提供的deliveryTag
+                         * requeue：true 表示拒绝的消息应重新入队，而不是否丢弃
+                         */
+                        //channel.basicNack(envelope.getDeliveryTag(), false, true);
+                        /**
+                         * 拒绝接收到的一个或者多个消息
+                         * deliveryTag：接收到消息的唯一标识
+                         * requeue：true 表示拒绝的消息应重新入队，而不是否丢弃
+                         */
+                        //channel.basicReject(envelope.getDeliveryTag(), true);
                     }
                 };
-                // false 关闭自动ack,默认情况下队列会以轮询的方式交给不同的消费者消费
+                /**
+                 * false 关闭自动ack,默认情况下队列会以轮询的方式交给不同的消费者消费
+                 *
+                 * 启动一个消费者,并返回服务端生成的消费者标识
+                 * true 接收到传递过来的消息后acknowledged（应答服务器），false 接收到消息后不应答服务器
+                 * deliverCallback  当一个消息发送过来后的回调接口
+                 * cancelCallback：当一个消费者取消订阅时的回调接口
+                 */
                 channel.basicConsume(queue,false,consumer);
                 System.out.println("开始监听队列:"+queue);
             }catch (Exception e){

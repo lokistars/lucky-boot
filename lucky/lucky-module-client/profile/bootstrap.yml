@@ -13,21 +13,21 @@ spring:
     timeout: 5000
   datasource:
     ## 数据库配置【数据库驱动｜数据库访问URL｜用户名｜数据库密码】
-    type: com.alibaba.druid.pool.DruidDataSource
+    #type: com.alibaba.druid.pool.DruidDataSource
+    type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://119.91.148.176:3306/lucky?useUnicode=true&characterEncoding=utf8&serverTimezone=PRC&allowMultiQueries=true&useSSL=false
     username: root
     password: kdbase
-    druid:
-      max-active: 20
-      initial-size: 1
-      max-wait: 60000
-      min-idle: 1
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      validation-query: select 'x'
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      pool-prepared-statements: true
-      max-open-prepared-statements: 20
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20

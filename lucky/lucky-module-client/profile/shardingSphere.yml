@@ -4,13 +4,13 @@ spring:
     datasource:
       names: ds0,ds1
       ds0:
-        type: com.alibaba.druid.pool.DruidDataSource
+        type: com.zaxxer.hikari.HikariDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://192.168.1.9:3306/lucky?useUnicode=true&characterEncoding=utf8&serverTimezone=PRC&allowMultiQueries=true&allowPublicKeyRetrieval=true&useSSL=false
         username: root
         password: lucky
       ds1:
-        type: com.alibaba.druid.pool.DruidDataSource
+        type: com.zaxxer.hikari.HikariDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://119.91.148.176:3306/lucky?useUnicode=true&characterEncoding=utf8&serverTimezone=PRC&allowMultiQueries=true&allowPublicKeyRetrieval=true&useSSL=false
         username: root

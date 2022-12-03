@@ -32,7 +32,12 @@ public class RedisConfig {
     @Autowired
     private RedisProperties redisProperties;
 
-
+    /**
+     * 在LettuceConnectionConfiguration类中初始化factory
+     * 可以使用RedisConnectionFactory
+     * @param factory
+     * @return
+     */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory factory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -59,6 +64,10 @@ public class RedisConfig {
     }
 
 
+    /**
+     * RedissonAutoConfiguration 初始化 redisson redisson-spring-boot-starter
+     * @return
+     */
     @Bean
     public RedissonClient redissonClient(){
         Config config = new Config();
