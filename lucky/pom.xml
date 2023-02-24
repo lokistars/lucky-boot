@@ -47,6 +47,7 @@
         <junit.version>4.13.2</junit.version>
         <shardingSphere.version>4.1.1</shardingSphere.version>
         <binlog.version>0.20.1</binlog.version>
+        <rocketmq.version>2.2.1</rocketmq.version>
     </properties>
 
     <dependencies>
@@ -74,6 +75,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
 
         <dependency>

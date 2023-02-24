@@ -1,5 +1,6 @@
-package com.lucky.platform.ioDemo.netty;
+package com.lucky.platform.server;
 
+import com.lucky.platform.server.handler.MyInHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
@@ -86,8 +87,8 @@ public class MyNetty {
     }
 
     /**
-     * 服务端
-     * 游戏地址http://cdn0001.afrxvk.cn/hero_story/demo/step010/index.html?serverAddr=172.16.11.184:9014&userId=1
+     * 服务端 010
+     * 游戏地址http://cdn0001.afrxvk.cn/hero_story/demo/step030/index.html?serverAddr=172.16.11.184:9014&userId=1
      */
     private static void serverMode() throws Exception{
         // 线程组 一个Netty服务端启动时，通常会有两个NioEventLoopGroup：
@@ -104,16 +105,16 @@ public class MyNetty {
                     .channel(NioServerSocketChannel.class)// 服务器的通道实现
                     .option(ChannelOption.SO_BACKLOG,2)//设置线程队列得到的连接数
                     .childOption(ChannelOption.SO_KEEPALIVE,true) // 设置保持活跃连接状态
-                    //.handler(new LoggingHandler(LogLevel.INFO)) //对应的 bossGroup
+                    .handler(new LoggingHandler(LogLevel.ERROR)) //对应的 bossGroup
                     .childHandler(new MyChannelInitializer()); //设置Handler 对应的workerGroup
             //启动服务器并且绑定端口,且是同步的
-            final ChannelFuture sync = bootstrap.bind(9014).sync();
+            final ChannelFuture sync = bootstrap.bind(8001).sync();
             //监听端口是否绑定成功
             sync.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (sync.isSuccess()){
-                        System.out.println("监听端口9090绑定成功");
+                        log.info("监听端口8001绑定成功");
                     }
                 }
             });

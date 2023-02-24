@@ -1,4 +1,4 @@
-package com.lucky.platform.ioDemo.netty;
+package com.lucky.platform.server.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
