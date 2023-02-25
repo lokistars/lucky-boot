@@ -2,6 +2,7 @@ package com.lucky.platform.server.handler;
 
 import com.google.protobuf.GeneratedMessageV3;
 import com.lucky.platform.server.protocolBuf.GameMsgProtocol;
+import com.lucky.platform.utils.ChannelGroupUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -24,15 +25,10 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GameMsgHandler.class);
 
-    /**
-     * 定义一个channel组 管理所有的channel,必须是static
-     */
-    private static final ChannelGroup CHANNELS = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         try {
-            CHANNELS.add(ctx.channel());
+            ChannelGroupUtils.addChannels(ctx.channel());
             super.channelActive(ctx);
         } catch (Exception ex) {
             LOG.error(ex.getMessage(), ex);
@@ -40,10 +36,16 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof GameMsgProtocol.UserLoginCmd) {
-            GameMsgProtocol.UserLoginCmd entryCmd = (GameMsgProtocol.UserLoginCmd) msg;
-            new UserLonginCmdHandler().handle(channelHandlerContext, entryCmd);
+            GameMsgProtocol.UserLoginCmd loginCmd = (GameMsgProtocol.UserLoginCmd) msg;
+            new UserLonginCmdHandler().handle(ctx, loginCmd);
+        }else if(msg instanceof GameMsgProtocol.UserEntryCmd){
+            GameMsgProtocol.UserEntryCmd entryCmd = (GameMsgProtocol.UserEntryCmd) msg;
+            new UserEntryCmdHandler().handle(ctx,entryCmd);
+        }else if (msg instanceof GameMsgProtocol.WhoElseIsHereCmd){
+            GameMsgProtocol.WhoElseIsHereCmd who = (GameMsgProtocol.WhoElseIsHereCmd) msg;
+            new WhoElseIsHereHandler().handle(ctx,who);
         }
     }
 

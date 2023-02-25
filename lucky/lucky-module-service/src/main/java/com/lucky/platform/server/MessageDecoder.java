@@ -29,8 +29,6 @@ public class MessageDecoder extends SimpleChannelInboundHandler<Object> {
         if (null == ctx || null == msg ){
             return;
         }
-        // 把值保存起来
-        ctx.channel().attr(AttributeKey.valueOf("userId")).set("1");
         if (msg instanceof HttpRequest){
             // 获取浏览器传入的地址
             System.out.println("获取请求地址："+ctx.channel().remoteAddress());
@@ -72,6 +70,9 @@ public class MessageDecoder extends SimpleChannelInboundHandler<Object> {
                     break;
                 case GameMsgProtocol.MsgCode.USER_LOGIN_CMD_VALUE:
                     cmd = GameMsgProtocol.UserLoginCmd.parseFrom(bytes);
+                    break;
+                case GameMsgProtocol.MsgCode.WHO_ELSE_IS_HERE_CMD_VALUE:
+                    cmd = GameMsgProtocol.WhoElseIsHereCmd.parseFrom(bytes);
                     break;
                 default:
                     break;

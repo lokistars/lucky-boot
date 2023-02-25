@@ -1,5 +1,8 @@
-package com.lucky.platform.server;
+package com.lucky.platform;
 
+import com.alibaba.nacos.api.naming.NamingFactory;
+import com.alibaba.nacos.api.naming.NamingService;
+import com.lucky.platform.server.MyChannelInitializer;
 import com.lucky.platform.server.handler.MyInHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
@@ -16,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
+import java.util.Properties;
 
 /**
  * reactor 模型
@@ -88,7 +92,7 @@ public class MyNetty {
 
     /**
      * 服务端 010
-     * 游戏地址http://cdn0001.afrxvk.cn/hero_story/demo/step030/index.html?serverAddr=172.16.11.184:9014&userId=1
+     * 游戏地址http://cdn0001.afrxvk.cn/hero_story/demo/step030/index.html?serverAddr=172.16.11.184:8001&userId=1
      */
     private static void serverMode() throws Exception{
         // 线程组 一个Netty服务端启动时，通常会有两个NioEventLoopGroup：
@@ -124,5 +128,13 @@ public class MyNetty {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+    }
+
+    private void register() throws Exception{
+        Properties properties = new Properties();
+        properties.setProperty("serverAddr","127.0.0.1:8848");
+
+        NamingService service = NamingFactory.createNamingService(properties);
+        service.registerInstance("nettyServer","127.0.0.1",8001);
     }
 }
