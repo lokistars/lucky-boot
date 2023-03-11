@@ -16,5 +16,5 @@ public interface ICmdHandler<TCmd extends GeneratedMessageV3> {
      * @param ctx
      * @param cmd
      */
-    void handle(ChannelHandlerContext ctx, TCmd cmd);
+    void handle(GameMsgHandlerContext ctx, TCmd cmd);
 }

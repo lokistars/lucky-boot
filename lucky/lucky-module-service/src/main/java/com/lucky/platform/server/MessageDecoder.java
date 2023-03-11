@@ -62,7 +62,9 @@ public class MessageDecoder extends SimpleChannelInboundHandler<Object> {
             // 业务逻辑
             GeneratedMessageV3 cmd = null;
 
-            Message.Builder byMsgCode = GameMsgRecognizer.getMsgBuilderByMsgCode(msgCode);
+            Message.Builder message = GameMsgRecognizer.getMsgBuilderByMsgCode(msgCode);
+
+
 
             switch (msgCode){
                 case GameMsgProtocol.MsgCode.USER_ENTRY_CMD_VALUE:
@@ -73,6 +75,9 @@ public class MessageDecoder extends SimpleChannelInboundHandler<Object> {
                     break;
                 case GameMsgProtocol.MsgCode.WHO_ELSE_IS_HERE_CMD_VALUE:
                     cmd = GameMsgProtocol.WhoElseIsHereCmd.parseFrom(bytes);
+                    break;
+                case GameMsgProtocol.MsgCode.USER_MOVE_TO_CMD_VALUE:
+                    cmd = GameMsgProtocol.UserMoveToCmd.parseFrom(bytes);
                     break;
                 default:
                     break;

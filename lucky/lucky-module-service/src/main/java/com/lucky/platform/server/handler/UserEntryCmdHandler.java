@@ -1,10 +1,16 @@
 package com.lucky.platform.server.handler;
 
+import com.lucky.platform.config.RedisConfig;
+import com.lucky.platform.entity.User;
 import com.lucky.platform.server.protocolBuf.GameMsgProtocol;
 import com.lucky.platform.utils.ChannelGroupUtils;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @program: lucky-module-service
@@ -15,18 +21,27 @@ import org.slf4j.LoggerFactory;
 public class UserEntryCmdHandler implements ICmdHandler<GameMsgProtocol.UserEntryCmd>{
     static private final Logger LOG = LoggerFactory.getLogger(UserEntryCmdHandler.class);
 
-
-
     @Override
-    public void handle(ChannelHandlerContext ctx, GameMsgProtocol.UserEntryCmd cmd) {
+    public void handle(GameMsgHandlerContext ctx, GameMsgProtocol.UserEntryCmd cmd) {
         if (null == ctx || null == cmd) {
             return;
         }
-        LOG.info("接入成功");
+
+
         GameMsgProtocol.UserEntryResult.Builder builder = GameMsgProtocol.UserEntryResult.newBuilder();
-        builder.setUserId(1);
-        builder.setHeroAvatar("A");
+        builder.setUserId(ctx.getUserId());
+        String s = (ctx.getUserId() & 1) == 1 ? "Hero_Hammer" : "Hero_Skeleton";
+        builder.setUserName(s);
+        builder.setHeroAvatar("loki");
         GameMsgProtocol.UserEntryResult build = builder.build();
+
+        User user = new User();
+        user.setUserId(ctx.getUserId());
+        user.setUserName(s);
+        user.setHeroAvatar(s);
+        RedisConfig.getInstance().getBucket("user_"+ctx.getUserId()).set(user,1000, TimeUnit.SECONDS);
+
+        LOG.info("接入成功: {}",builder.getUserId());
         ChannelGroupUtils.send(build);
     }
 }

@@ -14,15 +14,7 @@ import io.netty.util.CharsetUtil;
  **/
 public class MyInHandler extends ChannelInboundHandlerAdapter {
 
-    /**
-     * 注册后
-     * @param ctx
-     * @throws Exception
-     */
-    @Override
-    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("client  Registered...");
-    }
+
 
     /**
      * 注销后
@@ -32,6 +24,18 @@ public class MyInHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         System.out.println("client  注销了...");
+        super.channelUnregistered(ctx);
+    }
+
+    /**
+     * 处理程序已删除,在Unregistered之后
+     * @param ctx
+     * @throws Exception
+     */
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("已删除");
+        super.handlerRemoved(ctx);
     }
 
     /**
@@ -68,6 +72,16 @@ public class MyInHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.writeAndFlush(Unpooled.copiedBuffer("Hello,客户端",CharsetUtil.UTF_8));
+    }
+
+    /**
+     * 注册完成后
+     * @param ctx
+     * @throws Exception
+     */
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("client  Registered...");
     }
 
     /**

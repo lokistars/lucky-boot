@@ -43,10 +43,10 @@ public class RedisConfig {
     public static RedissonClient getInstance(){
         RedisConfig config = new RedisConfig();
         RedisProperties properties = new RedisProperties();
-        properties.setHost("192.168.10.8");
-        properties.setPort(6379);
-        properties.setPassword("lucky5200");
-        properties.setDatabase(0);
+        properties.setHost("10.10.11.50");
+        properties.setPort(53379);
+        properties.setPassword("123456");
+        properties.setDatabase(1);
         return  config.redissonClient(properties);
     }
 

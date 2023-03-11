@@ -71,8 +71,7 @@ public final class GameMsgRecognizer {
                         msgCode.getNumber()
                     );
 
-                    _msgCodeAndMsgBodyMap.put(
-                        msgCode.getNumber(),
+                    _msgCodeAndMsgBodyMap.put( msgCode.getNumber(),
                         (GeneratedMessageV3) returnObj
                     );
 

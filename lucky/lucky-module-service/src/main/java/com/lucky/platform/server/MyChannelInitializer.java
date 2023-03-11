@@ -24,12 +24,14 @@ public class MyChannelInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new HttpObjectAggregator(65535));
         // netty提供的处理器，用于处理websocket，数据以帧的形式传递
         pipeline.addLast(new WebSocketServerProtocolHandler("/websocket"));
+        //pipeline.addLast(new ClientMsgHandler());
+
+        // 编码器
+        pipeline.addLast(new MessageEncoder());
 
         pipeline.addLast(new MessageDecoder());
         pipeline.addLast(new GameMsgHandler());
 
-        // 编码器
-        pipeline.addLast(new MessageEncoder());
 
         // 读空闲，写空闲，读写空闲
         // pipeline.addLast(new IdleStateHandler(3, 5, 7, TimeUnit.SECONDS));

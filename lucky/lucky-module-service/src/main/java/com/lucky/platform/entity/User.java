@@ -18,9 +18,14 @@ public class User implements Serializable {
 
     private String password;
 
+    /**
+     * 英雄头像,Hero_Hammer, Hero_Skeleton, Hero_Shaman
+     */
     private String heroAvatar;
 
     private String currHp;
+
+    private MoveState moveState;
 
     public User(){
 
@@ -68,5 +73,13 @@ public class User implements Serializable {
 
     public void setCurrHp(String currHp) {
         this.currHp = currHp;
+    }
+
+    public MoveState getMoveState() {
+        return moveState;
+    }
+
+    public void setMoveState(MoveState moveState) {
+        this.moveState = moveState;
     }
 }
