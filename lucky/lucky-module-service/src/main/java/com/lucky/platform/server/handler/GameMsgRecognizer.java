@@ -40,18 +40,18 @@ public final class GameMsgRecognizer {
      */
     static public void init() {
         LOGGER.info("=== 完成消息编号与消息体的映射 ===");
-
+        // 得到该类所有的内部类 (包括内部接口),不包含父类
         Class<?>[] innerClazzArray = GameMsgProtocol.class.getDeclaredClasses();
 
         for (Class<?> innerClazz : innerClazzArray) {
+            // 如果不是消息体类, 则跳过
             if (!GeneratedMessageV3.class.isAssignableFrom(innerClazz)) {
-                // 如果不是消息,
                 continue;
             }
 
-            String clazzName = innerClazz.getSimpleName();
-            clazzName = clazzName.toLowerCase();
+            String clazzName = innerClazz.getSimpleName().toLowerCase();
 
+            // 遍历枚举获取所有消息消息编号
             for (GameMsgProtocol.MsgCode msgCode : GameMsgProtocol.MsgCode.values()) {
                 // 获取消息编号
                 String strMsgCode = msgCode.name();
@@ -65,20 +65,11 @@ public final class GameMsgRecognizer {
                 try {
                     Object returnObj = innerClazz.getDeclaredMethod("getDefaultInstance").invoke(innerClazz);
 
-                    LOGGER.info(
-                        "关联 {} <==> {}",
-                        innerClazz.getName(),
-                        msgCode.getNumber()
-                    );
+                    LOGGER.info("关联 {} <==> {}", innerClazz.getName(), msgCode.getNumber());
 
-                    _msgCodeAndMsgBodyMap.put( msgCode.getNumber(),
-                        (GeneratedMessageV3) returnObj
-                    );
+                    _msgCodeAndMsgBodyMap.put(msgCode.getNumber(),(GeneratedMessageV3) returnObj);
 
-                    _msgTypeAndMsgCodeMap.put(
-                        innerClazz,
-                        msgCode.getNumber()
-                    );
+                    _msgTypeAndMsgCodeMap.put(innerClazz,msgCode.getNumber());
                 } catch (Exception ex) {
                     // 记录错误日志
                     LOGGER.error(ex.getMessage(), ex);

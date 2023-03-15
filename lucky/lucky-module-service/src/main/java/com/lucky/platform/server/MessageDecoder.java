@@ -2,6 +2,7 @@ package com.lucky.platform.server;
 
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Message;
+import com.lucky.platform.entity.InternalServerMsg;
 import com.lucky.platform.server.handler.GameMsgRecognizer;
 import com.lucky.platform.server.protocolBuf.GameMsgProtocol;
 import io.netty.buffer.ByteBuf;
@@ -64,28 +65,23 @@ public class MessageDecoder extends SimpleChannelInboundHandler<Object> {
 
             Message.Builder message = GameMsgRecognizer.getMsgBuilderByMsgCode(msgCode);
 
-
-
-            switch (msgCode){
-                case GameMsgProtocol.MsgCode.USER_ENTRY_CMD_VALUE:
-                    cmd = GameMsgProtocol.UserEntryCmd.parseFrom(bytes);
-                    break;
-                case GameMsgProtocol.MsgCode.USER_LOGIN_CMD_VALUE:
-                    cmd = GameMsgProtocol.UserLoginCmd.parseFrom(bytes);
-                    break;
-                case GameMsgProtocol.MsgCode.WHO_ELSE_IS_HERE_CMD_VALUE:
-                    cmd = GameMsgProtocol.WhoElseIsHereCmd.parseFrom(bytes);
-                    break;
-                case GameMsgProtocol.MsgCode.USER_MOVE_TO_CMD_VALUE:
-                    cmd = GameMsgProtocol.UserMoveToCmd.parseFrom(bytes);
-                    break;
-                default:
-                    break;
+            if (null == message){
+                LOG.error("无法识别的消息, msgCode = {}", msgCode);
+                return;
             }
 
-            if (null != cmd){
-                ctx.fireChannelRead(cmd);
-            }
+            message.clear();
+            message.mergeFrom(bytes);
+
+            InternalServerMsg serverMsg = new InternalServerMsg()
+                    .setGatewayServerId(0)
+                    .setRemoteSessionId(0)
+                    .setUserId(ctx.channel().id())
+                    .setMsgCode(msgCode)
+                    .setMsgBody(message.build());
+
+            ctx.fireChannelRead(serverMsg);
+
         }
 
     }

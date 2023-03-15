@@ -1,6 +1,10 @@
 package com.lucky.platform.server.handler;
 
+import com.google.protobuf.GeneratedMessageV3;
+import com.google.protobuf.Message;
 import com.lucky.platform.config.RedisConfig;
+import com.lucky.platform.entity.InternalServerMsg;
+import com.lucky.platform.server.factory.CmdHandlerFactory;
 import com.lucky.platform.server.protocolBuf.GameMsgProtocol;
 import com.lucky.platform.utils.ChannelGroupUtils;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author: Loki
  * @data: 2023-02-21 21:36
  **/
-public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
+public class GameMsgHandler extends SimpleChannelInboundHandler<InternalServerMsg> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GameMsgHandler.class);
 
@@ -35,23 +39,24 @@ public class GameMsgHandler extends SimpleChannelInboundHandler<Object> {
         }
     }
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ChannelId id = ctx.channel().id();
+    protected void channelRead0(ChannelHandlerContext ctx, InternalServerMsg msg) throws Exception {
 
-        context = new GameMsgHandlerContext(ctx,id);
+        context = new GameMsgHandlerContext(ctx,msg.getUserId());
 
-        if (msg instanceof GameMsgProtocol.UserLoginCmd) {
-            GameMsgProtocol.UserLoginCmd loginCmd = (GameMsgProtocol.UserLoginCmd) msg;
-            new UserLoginCmdHandler().handle(context, loginCmd);
-        }else if(msg instanceof GameMsgProtocol.UserEntryCmd){
-            GameMsgProtocol.UserEntryCmd entryCmd = (GameMsgProtocol.UserEntryCmd) msg;
-            new UserEntryCmdHandler().handle(context,entryCmd);
-        }else if (msg instanceof GameMsgProtocol.WhoElseIsHereCmd){
-            GameMsgProtocol.WhoElseIsHereCmd who = (GameMsgProtocol.WhoElseIsHereCmd) msg;
-            new WhoElseIsHereHandler().handle(context,who);
-        }else if (msg instanceof GameMsgProtocol.UserMoveToCmd){
-            GameMsgProtocol.UserMoveToCmd who = (GameMsgProtocol.UserMoveToCmd) msg;
-            new UserMoveCmdHandler().handle(context,who);
+        GeneratedMessageV3 msgBody = (GeneratedMessageV3) msg.getMsgBody();
+
+        ICmdHandler<? extends GeneratedMessageV3> handler = CmdHandlerFactory.create(msgBody.getClass());
+
+        if (Objects.nonNull(handler)){
+            handler.handle(context,cast(msgBody));
+        }
+    }
+
+    private <T extends GeneratedMessageV3> T cast(Object msg) {
+        if (null == msg) {
+            return null;
+        }else{
+            return (T) msg;
         }
     }
 
