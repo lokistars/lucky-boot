@@ -3,12 +3,10 @@ package com.lucky.platform.server.handler;
 import com.lucky.platform.config.RedisConfig;
 import com.lucky.platform.entity.MoveState;
 import com.lucky.platform.entity.User;
+import com.lucky.platform.server.factory.GameMsgHandlerContext;
 import com.lucky.platform.server.protocolBuf.GameMsgProtocol;
 import com.lucky.platform.utils.ChannelGroupUtils;
-import io.netty.channel.ChannelHandlerContext;
 import org.redisson.api.RBucket;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @program: lucky

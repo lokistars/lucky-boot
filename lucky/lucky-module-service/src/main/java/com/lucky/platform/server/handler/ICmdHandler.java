@@ -1,7 +1,7 @@
 package com.lucky.platform.server.handler;
 
 import com.google.protobuf.GeneratedMessageV3;
-import io.netty.channel.ChannelHandlerContext;
+import com.lucky.platform.server.factory.GameMsgHandlerContext;
 
 /**
  * @program: lucky-module-service

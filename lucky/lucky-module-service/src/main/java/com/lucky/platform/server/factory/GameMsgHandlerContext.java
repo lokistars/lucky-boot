@@ -1,4 +1,4 @@
-package com.lucky.platform.server.handler;
+package com.lucky.platform.server.factory;
 
 import com.lucky.platform.entity.User;
 import io.netty.channel.ChannelFuture;

@@ -2,15 +2,13 @@ package com.lucky.platform.server.handler;
 
 import com.lucky.platform.config.RedisConfig;
 import com.lucky.platform.entity.User;
+import com.lucky.platform.server.factory.GameMsgHandlerContext;
 import com.lucky.platform.server.protocolBuf.GameMsgProtocol;
 import com.lucky.platform.utils.ChannelGroupUtils;
-import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @program: lucky-module-service

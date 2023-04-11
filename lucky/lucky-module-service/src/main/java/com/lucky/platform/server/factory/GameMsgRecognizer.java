@@ -1,4 +1,4 @@
-package com.lucky.platform.server.handler;
+package com.lucky.platform.server.factory;
 
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.Message;

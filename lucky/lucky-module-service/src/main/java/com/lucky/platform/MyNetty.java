@@ -3,7 +3,7 @@ package com.lucky.platform;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.lucky.platform.server.MyChannelInitializer;
-import com.lucky.platform.server.handler.GameMsgRecognizer;
+import com.lucky.platform.server.factory.GameMsgRecognizer;
 import com.lucky.platform.server.handler.MyInHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
