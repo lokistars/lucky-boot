@@ -1,7 +1,5 @@
 package com.lucky.platform.config.web;
 
-import com.lucky.platform.config.web.ResultModel;
-
 /**
  * 定义状态码
  * @author Nuany

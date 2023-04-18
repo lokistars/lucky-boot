@@ -2,6 +2,9 @@ package com.lucky.platform.config.web;
 
 import java.io.Serializable;
 
+/**
+ * @author loki
+ */
 public class ResultModel<T> implements Serializable {
 
     private int code;

@@ -79,12 +79,11 @@
         </dependency>
 
 
-        <!--通用Mapper-->
-        <!--<dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>2.1.5</version>
-        </dependency>-->
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
+            <version>8.5.3</version>
+        </dependency>
 
         <!--druid 数据源  使用druid-spring-boot-starter 可能会出现问题-->
         <!--<dependency>
