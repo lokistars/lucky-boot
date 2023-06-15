@@ -1,4 +1,4 @@
-package com.lucky.config.jdk;
+package com.lucky.config.demo;
 
 import com.lucky.config.entity.User;
 import org.openjdk.jol.info.ClassLayout;

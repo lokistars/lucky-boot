@@ -2,6 +2,7 @@ package com.lucky.config.util;
 
 import sun.misc.Unsafe;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -23,124 +24,34 @@ import java.util.concurrent.locks.LockSupport;
  */
 public class MyAbstractQueuedSynchronizer implements Serializable {
 
+    static final long spinForTimeoutThreshold = 1000L;
     private static final long serialVersionUID = 7373984972572414691L;
+    private static final Unsafe unsafe = getUnsafe();
+    private static final long stateOffset;
+    private static final long headOffset;
+    private static final long tailOffset;
+    private static final long waitStatusOffset;
+    private static final long nextOffset;
 
-    protected MyAbstractQueuedSynchronizer() {
+    static {
+        try {
+            stateOffset = unsafe.objectFieldOffset
+                    (MyAbstractQueuedSynchronizer.class.getDeclaredField("state"));
+            headOffset = unsafe.objectFieldOffset
+                    (MyAbstractQueuedSynchronizer.class.getDeclaredField("head"));
+            tailOffset = unsafe.objectFieldOffset
+                    (MyAbstractQueuedSynchronizer.class.getDeclaredField("tail"));
+            waitStatusOffset = unsafe.objectFieldOffset
+                    (Node.class.getDeclaredField("waitStatus"));
+            nextOffset = unsafe.objectFieldOffset
+                    (Node.class.getDeclaredField("next"));
+
+        } catch (Exception ex) {
+            throw new Error(ex);
+        }
     }
 
     private transient Thread exclusiveOwnerThread;
-
-    /**
-     * 设置当前拥有独占访问权限的线程
-     */
-    protected final void setExclusiveOwnerThread(Thread thread) {
-        exclusiveOwnerThread = thread;
-    }
-
-    protected final Thread getExclusiveOwnerThread() {
-        return exclusiveOwnerThread;
-    }
-
-
-    static final class Node {
-        /**
-         * 共享模式下的等待标记,共享锁
-         */
-        static final Node SHARED = new Node();
-        /**
-         * 指示节点以独占模式等待的标记,互斥锁
-         */
-        static final Node EXCLUSIVE = null;
-
-        /**
-         * 表示当前节点的线程因为超时或者中断被取消
-         */
-        static final int CANCELLED = 1;
-        /**
-         * 表示当前节点的后续节点的线程需要运行，也就是通过unpark操作
-         */
-        static final int SIGNAL = -1;
-        /**
-         * 表示当前节点在condition队列中
-         */
-        static final int CONDITION = -2;
-        /**
-         * waitStatus value to indicate the next acquireShared should
-         * unconditionally propagate
-         * 共享模式下起作用，表示后续的节点会传播唤醒的操作
-         */
-        static final int PROPAGATE = -3;
-        /**
-         * 状态，包括上面的四种状态值，初始值为0，一般是节点的初始状态
-         */
-        volatile int waitStatus;
-        /**
-         * 上一个节点的引用
-         */
-        volatile Node prev;
-        /**
-         * 下一个节点的引用
-         */
-        volatile Node next;
-        /**
-         * 保存在当前节点的线程引用
-         */
-        volatile Thread thread;
-        /**
-         * condition队列的后续节点
-         */
-        Node nextWaiter;
-
-        /**
-         * 表示当前节点是否被共享
-         * @return
-         */
-        final boolean isShared() {
-            return nextWaiter == SHARED;
-        }
-
-        /**
-         * 获取当前节点的上一个给节点
-         *
-         * @return
-         * @throws NullPointerException
-         */
-        final Node predecessor() throws NullPointerException {
-            Node p = prev;
-            if (p == null) {
-                throw new NullPointerException();
-            } else {
-                return p;
-            }
-        }
-
-        /**
-         * 用于建立初始头部或共享标记
-         */
-        Node() {
-        }
-
-        /**
-         * addWaiter 中添加节点
-         *
-         * @param thread
-         * @param mode
-         */
-        Node(Thread thread, Node mode) {
-            this.thread = thread;
-            this.nextWaiter = mode;
-        }
-
-        /**
-         * @param thread
-         * @param waitStatus
-         */
-        Node(Thread thread, int waitStatus) {
-            this.thread = thread;
-            this.waitStatus = waitStatus;
-        }
-    }
-
     /**
      * 队列头节点
      */
@@ -149,11 +60,93 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
      * 等待队列的尾部，延迟初始化。仅通过方法 enq 修改以添加新的等待节点
      */
     private transient volatile Node tail;
-
     /**
      * 表示同步状态,重入锁会递增
      */
     private volatile int state;
+
+    protected MyAbstractQueuedSynchronizer() {
+    }
+
+    /**
+     * 确保上一个节点状态是正确的
+     *
+     * @param pred 上一个节点
+     * @param node 当前节点
+     * @return 返回true 线程挂起
+     */
+    private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+        // 拿到上一个节点的状态
+        int ws = pred.waitStatus;
+        // 如果上一个节点的状态为 -1
+        if (ws == Node.SIGNAL) {
+            // 返回true 线程挂起
+            return true;
+        }
+        // 如果上一个节点是取消状态
+        if (ws > 0) {
+            // 循环节点往前找,找到一个状态小于0的节点
+            do {
+                node.prev = pred = pred.prev;
+            } while (pred.waitStatus > 0);
+            pred.next = node;
+        } else {
+            // 将小于等于0的节点状态改为-1
+            compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
+        }
+        return false;
+    }
+
+    /**
+     * Convenience method to interrupt current thread.
+     */
+    static void selfInterrupt() {
+        Thread.currentThread().interrupt();
+    }
+
+    private static Unsafe getUnsafe() {
+        Unsafe unsafe = null;
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            unsafe = (Unsafe) theUnsafe.get(null);
+        } catch (NoSuchFieldException e) {
+
+        } catch (IllegalAccessException e) {
+
+        }
+        return unsafe;
+    }
+
+    /**
+     * CAS waitStatus field of a node.
+     */
+    private static final boolean compareAndSetWaitStatus(Node node,
+                                                         int expect,
+                                                         int update) {
+        return unsafe.compareAndSwapInt(node, waitStatusOffset,
+                expect, update);
+    }
+
+    /**
+     * CAS next field of a node.
+     */
+    private static final boolean compareAndSetNext(Node node,
+                                                   Node expect,
+                                                   Node update) {
+        return unsafe.compareAndSwapObject(node, nextOffset, expect, update);
+    }
+
+    protected final Thread getExclusiveOwnerThread() {
+        return exclusiveOwnerThread;
+    }
+
+    /**
+     * 设置当前拥有独占访问权限的线程
+     */
+    protected final void setExclusiveOwnerThread(Thread thread) {
+        exclusiveOwnerThread = thread;
+    }
 
     /**
      * 返回同步状态的当前值
@@ -185,13 +178,8 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
         return unsafe.compareAndSwapInt(this, stateOffset, expect, update);
     }
 
-    static final long spinForTimeoutThreshold = 1000L;
-
     /**
      * 将node节点添加到队列中,无论怎样都会添加成功。
-     *
-     * @param node
-     * @return
      */
     private Node enq(final Node node) {
         // 自旋操作, 只有加入队列成功才会return
@@ -220,7 +208,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
 
     /**
      * 将当前线程添加到AQS队列中,添加到尾节点
-     *
      * @param mode mode为null 是互斥锁,不是null是共享锁
      * @return 返回当前节点
      */
@@ -258,8 +245,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
      * 唤醒正在排队的线程节点
      * 为什么会从尾往前找,是因为在addWaiter操作时,是先将当前的Node的prev指向前面的节点,然后将tail赋值给当前的node
      * 如果从前往后找通过next去找,可能会丢失某个节点不会唤醒,如果从后往前找,肯定能找到所有的节点
-     *
-     * @param node
      */
     private void unparkSuccessor(Node node) {
         // 获取当前节点状态
@@ -286,64 +271,50 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
         }
     }
 
+    /**
+     * 释放共享资源并唤醒等待线程
+     */
     private void doReleaseShared() {
-        /*
-         * Ensure that a release propagates, even if there are other
-         * in-progress acquires/releases.  This proceeds in the usual
-         * way of trying to unparkSuccessor of head if it needs
-         * signal. But if it does not, status is set to PROPAGATE to
-         * ensure that upon release, propagation continues.
-         * Additionally, we must loop in case a new node is added
-         * while we are doing this. Also, unlike other uses of
-         * unparkSuccessor, we need to know if CAS to reset status
-         * fails, if so rechecking.
-         */
         for (; ; ) {
             Node h = head;
+            // 头节点不等于尾节点表示有排队节点
             if (h != null && h != tail) {
                 int ws = h.waitStatus;
+                // 如果等待状态为 SIGNAL -1，则尝试将头结点的等待状态设置为 0，并唤醒下一个等待线程
                 if (ws == Node.SIGNAL) {
                     if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0)) {
-                        continue;// loop to recheck cases
+                        continue;
                     }
+                    // 唤醒正在排队的线程节点
                     unparkSuccessor(h);
-                } else if (ws == 0 &&
-                        !compareAndSetWaitStatus(h, 0, Node.PROPAGATE)) {
-                    {
-                        continue;                // loop on failed CAS
-                    }
+                    //如果等待状态为 0，则尝试将头结点的等待状态设置为 PROPAGATE,如果 CAS 操作失败，则继续循环
+                } else if (ws == 0 && !compareAndSetWaitStatus(h, 0, Node.PROPAGATE)) {
+                    continue;
                 }
             }
-            if (h == head)                   // loop if head changed
-            {
+            // 如果头结点没有发生变化，则退出循环
+            if (h == head) {
                 break;
             }
         }
     }
 
+    /**
+     * 会将当前线程后后面所有排队的线程都唤醒
+     *
+     * @param node      当前现场node节点
+     * @param propagate 剩余资源
+     */
     private void setHeadAndPropagate(Node node, int propagate) {
-        Node h = head; // Record old head for check below
+        Node h = head;
+        // 将当前节点设置为头节点
         setHead(node);
-        /*
-         * Try to signal next queued node if:
-         *   Propagation was indicated by caller,
-         *     or was recorded (as h.waitStatus either before
-         *     or after setHead) by a previous operation
-         *     (note: this uses sign-check of waitStatus because
-         *      PROPAGATE status may transition to SIGNAL.)
-         * and
-         *   The next node is waiting in shared mode,
-         *     or we don't know, because it appears null
-         *
-         * The conservatism in both of these checks may cause
-         * unnecessary wake-ups, but only when there are multiple
-         * racing acquires/releases, so most need signals now or soon
-         * anyway.
-         */
+        // propagate > 0, 还存在剩下资源,
         if (propagate > 0 || h == null || h.waitStatus < 0 ||
                 (h = head) == null || h.waitStatus < 0) {
             Node s = node.next;
-            if (s == null || s.isShared()){
+            if (s == null || s.isShared()) {
+                // 释放资源,唤醒等待线程
                 doReleaseShared();
             }
         }
@@ -394,42 +365,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
 
             node.next = node; // help GC
         }
-    }
-
-    /**
-     * 确保上一个节点状态是正确的
-     *
-     * @param pred 上一个节点
-     * @param node 当前节点
-     * @return 返回true 线程挂起
-     */
-    private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
-        // 拿到上一个节点的状态
-        int ws = pred.waitStatus;
-        // 如果上一个节点的状态为 -1
-        if (ws == Node.SIGNAL) {
-            // 返回true 线程挂起
-            return true;
-        }
-        // 如果上一个节点是取消状态
-        if (ws > 0) {
-            // 循环节点往前找,找到一个状态小于0的节点
-            do {
-                node.prev = pred = pred.prev;
-            } while (pred.waitStatus > 0);
-            pred.next = node;
-        } else {
-            // 将小于等于0的节点状态改为-1
-            compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
-        }
-        return false;
-    }
-
-    /**
-     * Convenience method to interrupt current thread.
-     */
-    static void selfInterrupt() {
-        Thread.currentThread().interrupt();
     }
 
     /**
@@ -585,26 +520,30 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
     }
 
     /**
-     * Acquires in shared interruptible mode.
+     * 在共享模式下让当前线程去排队,并挂起线程
      *
      * @param arg the acquire argument
      */
     private void doAcquireSharedInterruptibly(int arg)
             throws InterruptedException {
+        // 将当前现场封装为Node,并且添加到AQS队列尾节点
         final Node node = addWaiter(Node.SHARED);
         boolean failed = true;
         try {
             for (; ; ) {
                 final Node p = node.predecessor();
                 if (p == head) {
+                    // 在次获取state状态,CountDownLatch中 state为0 返回 1
                     int r = tryAcquireShared(arg);
                     if (r >= 0) {
+                        // 会将当前线程后面所有排队的线程都唤醒
                         setHeadAndPropagate(node, r);
                         p.next = null; // help GC
                         failed = false;
                         return;
                     }
                 }
+                // 挂起线程资源
                 if (shouldParkAfterFailedAcquire(p, node) &&
                         parkAndCheckInterrupt()) {
                     throw new InterruptedException();
@@ -617,6 +556,9 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
         }
     }
 
+    /**
+     * 获取共享锁,如果当前线程不能获取到锁，则会进入等待队列并阻塞
+     */
     private boolean doAcquireSharedNanos(int arg, long nanosTimeout)
             throws InterruptedException {
         if (nanosTimeout <= 0L) {
@@ -664,14 +606,23 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * 留给子类实现
+     */
     protected int tryAcquireShared(int arg) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * 留给子类实现
+     */
     protected boolean tryReleaseShared(int arg) {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * 留给子类实现
+     */
     protected boolean isHeldExclusively() {
         throw new UnsupportedOperationException();
     }
@@ -715,9 +666,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
 
     /**
      * 释放锁资源
-     *
-     * @param arg
-     * @return
      */
     public final boolean release(int arg) {
         // 尝试释放锁,释放干净了返回true
@@ -738,27 +686,40 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
         }
     }
 
+    /**
+     * 获取共享锁并允许中断
+     */
     public final void acquireSharedInterruptibly(int arg)
             throws InterruptedException {
         if (Thread.interrupted()) {
             throw new InterruptedException();
         }
+        // 留给子类实现,尝试获取共享锁state,  在共享模式下,存在锁让当前线程进行排队
         if (tryAcquireShared(arg) < 0) {
             doAcquireSharedInterruptibly(arg);
         }
     }
 
+
+    /**
+     * 尝试获取共享锁
+     */
     public final boolean tryAcquireSharedNanos(int arg, long nanosTimeout)
             throws InterruptedException {
         if (Thread.interrupted()) {
             throw new InterruptedException();
         }
+        //
         return tryAcquireShared(arg) >= 0 ||
                 doAcquireSharedNanos(arg, nanosTimeout);
     }
 
+    /**
+     * 释放共享锁资源
+     */
     public final boolean releaseShared(int arg) {
         if (tryReleaseShared(arg)) {
+            // 唤醒在AQS中排队的Node,去竞争资源
             doReleaseShared();
             return true;
         }
@@ -909,9 +870,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
                 ((s = h.next) == null || s.thread != Thread.currentThread());
     }
 
-
-    // Instrumentation and monitoring methods
-
     /**
      * Returns an estimate of the number of threads waiting to
      * acquire.  The value is only an estimate because the number of
@@ -931,6 +889,8 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
         }
         return n;
     }
+
+    // Instrumentation methods for conditions
 
     /**
      * Returns a collection containing threads that may be waiting to
@@ -1012,9 +972,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
                 "[State = " + s + ", " + q + "empty queue]";
     }
 
-
-    // Internal support methods for Conditions
-
     /**
      * Returns true if a node, always one that was initially placed on
      * a condition queue, is now waiting to reacquire on sync queue.
@@ -1058,6 +1015,8 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
             t = t.prev;
         }
     }
+
+    //private static final Unsafe unsafe = Unsafe.getUnsafe();
 
     /**
      * Transfers a node from a condition queue onto sync queue.
@@ -1141,8 +1100,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
         }
     }
 
-    // Instrumentation methods for conditions
-
     /**
      * Queries whether the given ConditionObject
      * uses this synchronizer as its lock.
@@ -1225,6 +1182,121 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
     }
 
     /**
+     * CAS head field. Used only by enq.
+     */
+    private final boolean compareAndSetHead(Node update) {
+        return unsafe.compareAndSwapObject(this, headOffset, null, update);
+    }
+
+    /**
+     * CAS tail field. Used only by enq.
+     */
+    private final boolean compareAndSetTail(Node expect, Node update) {
+        return unsafe.compareAndSwapObject(this, tailOffset, expect, update);
+    }
+
+    static final class Node {
+        /**
+         * 共享模式下的等待标记,共享锁
+         */
+        static final Node SHARED = new Node();
+        /**
+         * 指示节点以独占模式等待的标记,互斥锁
+         */
+        static final Node EXCLUSIVE = null;
+
+        /**
+         * 表示当前节点的线程因为超时或者中断被取消
+         */
+        static final int CANCELLED = 1;
+        /**
+         * 表示当前节点的后续节点的线程需要运行，也就是通过unpark操作
+         */
+        static final int SIGNAL = -1;
+        /**
+         * 表示当前节点在condition队列中
+         */
+        static final int CONDITION = -2;
+        /**
+         * waitStatus value to indicate the next acquireShared should
+         * unconditionally propagate
+         * 共享模式下起作用，表示后续的节点会传播唤醒的操作
+         */
+        static final int PROPAGATE = -3;
+        /**
+         * 状态，包括上面的四种状态值，初始值为0，一般是节点的初始状态, 表示当前节点在等待队列中,还没有被唤醒
+         * -1、-2、-3、1、0 几种状态类型
+         */
+        volatile int waitStatus;
+        /**
+         * 上一个节点的引用
+         */
+        volatile Node prev;
+        /**
+         * 下一个节点的引用
+         */
+        volatile Node next;
+        /**
+         * 保存在当前节点的线程引用
+         */
+        volatile Thread thread;
+        /**
+         * condition队列的后续节点
+         */
+        Node nextWaiter;
+
+        /**
+         * 用于建立初始头部或共享标记
+         */
+        Node() {
+        }
+
+        /**
+         * addWaiter 中添加节点
+         *
+         * @param thread
+         * @param mode
+         */
+        Node(Thread thread, Node mode) {
+            this.thread = thread;
+            this.nextWaiter = mode;
+        }
+
+        /**
+         * @param thread
+         * @param waitStatus
+         */
+        Node(Thread thread, int waitStatus) {
+            this.thread = thread;
+            this.waitStatus = waitStatus;
+        }
+
+        /**
+         * 表示当前节点是否被共享
+         *
+         * @return
+         */
+        final boolean isShared() {
+            return nextWaiter == SHARED;
+        }
+
+        /**
+         * 获取当前节点的上一个给节点
+         *
+         * @return
+         * @throws NullPointerException
+         */
+        final Node predecessor() throws NullPointerException {
+            Node p = prev;
+            if (p == null) {
+                throw new NullPointerException();
+            } else {
+                return p;
+            }
+        }
+    }
+
+    /**
      * Condition implementation for a {@link
      * AbstractQueuedSynchronizer} serving as the basis of a {@link
      * Lock} implementation.
@@ -1242,9 +1314,19 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
     public class ConditionObject implements Condition, Serializable {
         private static final long serialVersionUID = 1173984872572414699L;
         /**
+         * Mode meaning to reinterrupt on exit from wait
+         */
+        private static final int REINTERRUPT = 1;
+        /**
+         * Mode meaning to throw InterruptedException on exit from wait
+         */
+        private static final int THROW_IE = -1;
+        /**
          * First node of condition queue.
          */
         private transient Node firstWaiter;
+
+        // Internal methods
         /**
          * Last node of condition queue.
          */
@@ -1255,8 +1337,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
          */
         public ConditionObject() {
         }
-
-        // Internal methods
 
         /**
          * Adds a new waiter to wait queue.
@@ -1300,6 +1380,8 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
             } while (!transferForSignal(first) &&
                     (first = firstWaiter) != null);
         }
+
+        // public methods
 
         /**
          * Removes and transfers all nodes.
@@ -1352,8 +1434,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
             }
         }
 
-        // public methods
-
         /**
          * Moves the longest-waiting thread, if one exists, from the
          * wait queue for this condition to the wait queue for the
@@ -1373,6 +1453,13 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
                 doSignal(first);
             }
         }
+
+        /*
+         * For interruptible waits, we need to track whether to throw
+         * InterruptedException, if interrupted while blocked on
+         * condition, versus reinterrupt current thread, if
+         * interrupted while blocked waiting to re-acquire.
+         */
 
         /**
          * Moves all threads from the wait queue for this condition to
@@ -1416,22 +1503,6 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
                 selfInterrupt();
             }
         }
-
-        /*
-         * For interruptible waits, we need to track whether to throw
-         * InterruptedException, if interrupted while blocked on
-         * condition, versus reinterrupt current thread, if
-         * interrupted while blocked waiting to re-acquire.
-         */
-
-        /**
-         * Mode meaning to reinterrupt on exit from wait
-         */
-        private static final int REINTERRUPT = 1;
-        /**
-         * Mode meaning to throw InterruptedException on exit from wait
-         */
-        private static final int THROW_IE = -1;
 
         /**
          * Checks for interrupt, returning THROW_IE if interrupted
@@ -1721,79 +1792,5 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
             }
             return list;
         }
-    }
-
-    private static Unsafe getUnsafe() {
-        Unsafe unsafe = null;
-        try {
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            unsafe = (Unsafe) theUnsafe.get(null);
-        } catch (NoSuchFieldException e) {
-
-        } catch (IllegalAccessException e) {
-
-        }
-        return unsafe;
-    }
-
-    //private static final Unsafe unsafe = Unsafe.getUnsafe();
-
-    private static final Unsafe unsafe = getUnsafe();
-    private static final long stateOffset;
-    private static final long headOffset;
-    private static final long tailOffset;
-    private static final long waitStatusOffset;
-    private static final long nextOffset;
-
-    static {
-        try {
-            stateOffset = unsafe.objectFieldOffset
-                    (MyAbstractQueuedSynchronizer.class.getDeclaredField("state"));
-            headOffset = unsafe.objectFieldOffset
-                    (MyAbstractQueuedSynchronizer.class.getDeclaredField("head"));
-            tailOffset = unsafe.objectFieldOffset
-                    (MyAbstractQueuedSynchronizer.class.getDeclaredField("tail"));
-            waitStatusOffset = unsafe.objectFieldOffset
-                    (Node.class.getDeclaredField("waitStatus"));
-            nextOffset = unsafe.objectFieldOffset
-                    (Node.class.getDeclaredField("next"));
-
-        } catch (Exception ex) {
-            throw new Error(ex);
-        }
-    }
-
-    /**
-     * CAS head field. Used only by enq.
-     */
-    private final boolean compareAndSetHead(Node update) {
-        return unsafe.compareAndSwapObject(this, headOffset, null, update);
-    }
-
-    /**
-     * CAS tail field. Used only by enq.
-     */
-    private final boolean compareAndSetTail(Node expect, Node update) {
-        return unsafe.compareAndSwapObject(this, tailOffset, expect, update);
-    }
-
-    /**
-     * CAS waitStatus field of a node.
-     */
-    private static final boolean compareAndSetWaitStatus(Node node,
-                                                         int expect,
-                                                         int update) {
-        return unsafe.compareAndSwapInt(node, waitStatusOffset,
-                expect, update);
-    }
-
-    /**
-     * CAS next field of a node.
-     */
-    private static final boolean compareAndSetNext(Node node,
-                                                   Node expect,
-                                                   Node update) {
-        return unsafe.compareAndSwapObject(node, nextOffset, expect, update);
     }
 }

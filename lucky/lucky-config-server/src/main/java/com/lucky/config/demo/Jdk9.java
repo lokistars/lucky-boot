@@ -1,4 +1,4 @@
-package com.lucky.config.jdk;
+package com.lucky.config.demo;
 
 import com.lucky.config.service.UserService;
 
