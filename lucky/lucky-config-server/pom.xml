@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.7.RELEASE</version>
+        <version>3.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lucky</groupId>
@@ -15,8 +15,10 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+        <spring.version>3.1.0</spring.version>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -32,6 +34,13 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
+        </dependency>
+
+        <!-- jol工具类,查看对象信息 -->
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-core</artifactId>
+            <version>0.16</version>
         </dependency>
 
     </dependencies>
