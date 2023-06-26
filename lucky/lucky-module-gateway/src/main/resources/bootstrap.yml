@@ -5,31 +5,33 @@ spring:
     # prefix 默认为 spring.application.name 的值，也可以通过配置项 spring.cloud.nacos.config.prefix来配置
     # spring.profiles.active 即为当前环境对应的 profile spring.profiles.active 为空时，对应的连接符 - 也将不存在
     # file-exetension 为配置内容的数据格式，可以通过配置项 spring.cloud.nacos.config.file-extension 来配置。
-    name: lucky-gateway
+    name: lucky-module-gateway
   cloud:
     nacos:
       # nacos server 的地址
-      server-addr: 101.43.63.132:8848
-      username: dev
-      password: dev
+      server-addr: ${nacos.server}
+      username: ${nacos.username}
+      password: ${nacos.password}
       # 服务注册
       discovery:
-        server-addr: 101.43.63.132:8848
-        namespace: 76f1596d-8d58-404c-adff-30494b5cc784
+        server-addr: ${nacos.server}
+        namespace: ${nacos.namespace}
       config:
+        server-addr: ${nacos.server}
         # 配置名前缀，默认${spring.application.name}
-        prefix: gateway
+        prefix: ${spring.application.name}
         # 配置文件格式：默认properties
         file-extension: yml
         # 指定命名空间：默认public
-        namespace: 76f1596d-8d58-404c-adff-30494b5cc784
+        namespace: ${nacos.namespace}
         # 分组
         group: DEFAULT_GROUP
         # 超时时间
         timeout: 50000
         # 共享配置文件
         shared-configs:
-          - data-id: application.properties
+          - data-id: lucky-common.yml
+
 
     gateway:
       discovery:

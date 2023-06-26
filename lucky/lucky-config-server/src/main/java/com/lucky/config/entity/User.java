@@ -1,10 +1,15 @@
 package com.lucky.config.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Loki
  * @data: 2021-12-03 20:57
  **/
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -5179523762034025860L;
+
     private int id;
     private String name;
     private int age;

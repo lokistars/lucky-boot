@@ -6,17 +6,15 @@
     <parent>
         <groupId>com.lucky.platform</groupId>
         <artifactId>lucky</artifactId>
-        <version>2.3.3-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.lucky.platform</groupId>
     <artifactId>lucky-module-common</artifactId>
-    <version>2.3.3-SNAPSHOT</version>
+    <version>${luvky.version}</version>
     <name>lucky-module-common</name>
 
     <description>common project for Spring Boot</description>
-
-
     <dependencies>
         <!-- 发送邮件-->
         <dependency>

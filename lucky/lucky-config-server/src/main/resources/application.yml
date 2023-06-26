@@ -3,3 +3,10 @@ server:
 spring:
   application:
     name: config
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

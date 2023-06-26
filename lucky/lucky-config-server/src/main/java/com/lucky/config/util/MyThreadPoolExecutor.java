@@ -1063,9 +1063,6 @@ public class MyThreadPoolExecutor extends AbstractExecutorService {
     protected void terminated() {
     }
 
-    private interface MyRejectedExecutionHandler {
-        void rejectedExecution(Runnable r, MyThreadPoolExecutor executor);
-    }
 
     public static class CallerRunsPolicy implements MyRejectedExecutionHandler {
         /**

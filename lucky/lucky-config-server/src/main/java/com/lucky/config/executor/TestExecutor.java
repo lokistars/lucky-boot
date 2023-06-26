@@ -3,6 +3,7 @@ package com.lucky.config.executor;
 import com.lucky.config.util.MyLinkedBlockingQueue;
 import com.lucky.config.util.MyThreadPoolExecutor;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -22,8 +23,11 @@ public class TestExecutor {
             System.out.println("1231");
         });
 
-        MyLinkedBlockingQueue<Runnable> queue = new MyLinkedBlockingQueue<>(10);
+        CompletableFuture.runAsync(()->{
 
+        }).thenRun(()->{
+
+        });
 
     }
 

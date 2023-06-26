@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.7.RELEASE</version>
+        <version>2.7.13</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.lucky.platform</groupId>
     <artifactId>lucky</artifactId>
-    <version>2.3.3-SNAPSHOT</version>
+    <version>${luvky.version}</version>
     <packaging>pom</packaging>
 
     <name>lucky</name>
@@ -25,9 +25,11 @@
     </modules>
 
     <properties>
+        <!--SNAPSHOT 快照版 RELEASE 正式版 -->
+        <luvky.version>1.0.0-SNAPSHOT</luvky.version>
         <java.version>1.8</java.version>
-        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
-        <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
+        <spring-cloud.version>2021.0.7</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
         <nacos.version>2.2.1.RELEASE</nacos.version>
         <mysql.version>8.0.25</mysql.version>
         <jedis.version>3.3.0</jedis.version>
@@ -48,6 +50,8 @@
         <shardingSphere.version>4.1.1</shardingSphere.version>
         <binlog.version>0.20.1</binlog.version>
         <rocketmq.version>2.2.1</rocketmq.version>
+        <gateway.version>3.1.7</gateway.version>
+        <openFeign.version>3.1.7</openFeign.version>
     </properties>
 
     <dependencies>
@@ -108,18 +112,17 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
+            <!-- 官方版本对应关系 https://start.spring.io/actuator/info -->
+
+            <!--<dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    <!-- alibaba -->
-    <!--<dependencyManagement>
-        <dependencies>
+            </dependency>-->
+
+            <!-- alibaba 对应版本Spring Cloud 2021.0.5 2.6.13-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -128,7 +131,7 @@
                 <scope>import</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>-->
+    </dependencyManagement>
 
     <build>
         <resources>
