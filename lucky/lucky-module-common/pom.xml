@@ -11,7 +11,7 @@
 
     <groupId>com.lucky.platform</groupId>
     <artifactId>lucky-module-common</artifactId>
-    <version>${luvky.version}</version>
+    <version>${lucky.version}</version>
     <name>lucky-module-common</name>
 
     <description>common project for Spring Boot</description>
@@ -45,6 +45,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
 
     </dependencies>

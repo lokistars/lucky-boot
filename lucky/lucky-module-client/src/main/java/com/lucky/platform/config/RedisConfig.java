@@ -10,6 +10,7 @@ import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.Codec;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
+import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -35,13 +35,13 @@ public class RedisConfig {
     private RedisProperties redisProperties;
 
     /**
-     * 在LettuceConnectionConfiguration类中初始化factory
-     * 可以使用RedisConnectionFactory
+     * RedisConnectionFactory接口,实现子类：JedisConnectionFactory,LettuceConnectionConfiguration,RedissonConnectionFactory
+     * 如果加载redisson-starter 会屏蔽Jedis跟Lettuce
      * @param factory
      * @return
      */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory factory) {
+    public RedisTemplate<String, Object> redisTemplate(RedissonConnectionFactory factory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         template.setKeySerializer(StringRedisSerializer.UTF_8);
@@ -61,7 +61,7 @@ public class RedisConfig {
         //设置redis支持数据库的事务
         template.setEnableTransactionSupport(false);
         //配置共享本地连接设置
-        factory.setShareNativeConnection(true);
+        //factory.setShareNativeConnection(true);
         return template;
     }
 

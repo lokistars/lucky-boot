@@ -49,9 +49,9 @@ public class CheckSessionResolver extends AbstractNamedValueMethodArgumentResolv
             return null;
         } else {
             try {
-                CheckSession sesson = methodParameter.getParameterAnnotation(CheckSession.class);
-                System.out.println(sesson.value() + "resolveName");
-                return sesson.value();
+                CheckSession session = methodParameter.getParameterAnnotation(CheckSession.class);
+                System.out.println(session.value() + "resolveName");
+                return session.value();
             } catch (Exception e) {
                 throw new IllegalArgumentException("Date format conversion error", e);
             }

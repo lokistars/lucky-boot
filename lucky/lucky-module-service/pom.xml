@@ -11,7 +11,7 @@
 
     <!--<groupId>com.lucky.platform</groupId>-->
     <artifactId>lucky-module-service</artifactId>
-    <version>${luvky.version}</version>
+    <version>${lucky.version}</version>
     <name>lucky-module-service</name>
 
     <description>service project for Spring Boot</description>
@@ -38,7 +38,7 @@
 
         <dependency>
             <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
             <version>${redisson.version}</version>
         </dependency>
 

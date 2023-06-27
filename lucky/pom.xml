@@ -13,7 +13,7 @@
 
     <groupId>com.lucky.platform</groupId>
     <artifactId>lucky</artifactId>
-    <version>${luvky.version}</version>
+    <version>${lucky.version}</version>
     <packaging>pom</packaging>
 
     <name>lucky</name>
@@ -26,14 +26,13 @@
 
     <properties>
         <!--SNAPSHOT 快照版 RELEASE 正式版 -->
-        <luvky.version>1.0.0-SNAPSHOT</luvky.version>
+        <lucky.version>1.0.0-SNAPSHOT</lucky.version>
         <java.version>1.8</java.version>
         <spring-cloud.version>2021.0.7</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
         <nacos.version>2.2.1.RELEASE</nacos.version>
         <mysql.version>8.0.25</mysql.version>
-        <jedis.version>3.3.0</jedis.version>
-        <redisson.version>3.16.1</redisson.version>
+        <redisson.version>3.22.1</redisson.version>
         <druid.version>1.1.22</druid.version>
         <mybatis.version>2.1.2</mybatis.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
@@ -81,6 +80,12 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- 2.4版本之后不自动加载bootstrap.yml配置文件 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
@@ -114,13 +119,13 @@
         <dependencies>
             <!-- 官方版本对应关系 https://start.spring.io/actuator/info -->
 
-            <!--<dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>-->
+            </dependency>
 
             <!-- alibaba 对应版本Spring Cloud 2021.0.5 2.6.13-->
             <dependency>

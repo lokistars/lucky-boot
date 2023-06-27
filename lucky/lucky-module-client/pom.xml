@@ -11,7 +11,7 @@
 
     <!--<groupId>com.lucky.platform</groupId>-->
     <artifactId>lucky-module-client</artifactId>
-    <version>${luvky.version}</version>
+    <version>${lucky.version}</version>
     <name>lucky-module-client</name>
 
     <description>module client Spring Boot</description>
@@ -28,6 +28,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -48,7 +50,7 @@
         <dependency>
             <groupId>com.lucky.platform</groupId>
             <artifactId>lucky-module-common</artifactId>
-            <version>${luvky.version}</version>
+            <version>${lucky.version}</version>
         </dependency>
 
         <!-- shardingSphere -->
@@ -119,12 +121,6 @@
             <version>${hutool.version}</version>
         </dependency>
 
-        <!-- fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
 
         <!-- 生成 pdf -->
         <!--<dependency>
@@ -146,23 +142,24 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+        </dependency>-->
 
+        <!--Lettuce需要 依赖 连接池-->
+        <!--<dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>-->
 
+        <!-- redisson 屏蔽了 jedis lettuce -->
         <dependency>
             <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
             <version>${redisson.version}</version>
         </dependency>
 
-        <!--Lettuce需要 依赖 连接池-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-        </dependency>
 
     </dependencies>
 

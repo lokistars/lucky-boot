@@ -1,7 +1,7 @@
 spring:
   redis:
-    host: 10.10.11.115
-    password: 1234
+    host: 119.91.148.176
+    password: locky5200
     port: 6379
     database: 0
     lettuce:
@@ -18,7 +18,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://119.91.148.176:3306/lucky?useUnicode=true&characterEncoding=utf8&serverTimezone=PRC&allowMultiQueries=true&useSSL=false
     username: root
-    password: kdbase
+    password: lucky
     maxActive: 20
     initialSize: 1
     maxWait: 60000
