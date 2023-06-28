@@ -51,6 +51,7 @@
         <rocketmq.version>2.2.1</rocketmq.version>
         <gateway.version>3.1.7</gateway.version>
         <openFeign.version>3.1.7</openFeign.version>
+        <guava.version>32.0.1-jre</guava.version>
     </properties>
 
     <dependencies>
@@ -66,6 +67,12 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
             <version>${nacos.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
 
         <!--  配置处理  -->
