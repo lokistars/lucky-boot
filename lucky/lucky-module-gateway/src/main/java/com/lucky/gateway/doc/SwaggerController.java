@@ -1,3 +1,4 @@
+/*
 package com.lucky.gateway.doc;
 
 import java.util.Optional;
@@ -42,3 +43,4 @@ public class SwaggerController {
         return Mono.just(new ResponseEntity(this.swaggerResources.get(), HttpStatus.OK));
     }
 }
+*/

@@ -45,24 +45,30 @@ spring:
           include-expression: serviceId matches '^((?!gateway).)*' && serviceId matches '.*-(api|front).*'
           route-id-prefix:
       # 路由配置
-      #      routes:
-      #        # 唯⼀路由ID，一般直接用服务名即可
-      #        - id: dms-service-uc
-      #          # URI
-      #          uri: lb://dms-service-uc
-      #          # 路由条件
-      #          predicates:
-      #            # 路径匹配
-      #            - Path=/user/**
-      #          filters:
-      #            # 切掉第一个/前面的，/user
-      #            - StripPrefix=1
+      routes:
+        - id: favicon
+          uri: no://op
+          predicates:
+            - Path=/favicon.ico
+          filters:
+            - SetPath=/
+      # 唯⼀路由ID，一般直接用服务名即可
+      # - id: dms-service-uc
+      #   # URI
+      #   uri: lb://dms-service-uc
+      #   # 路由条件
+      #   predicates:
+      #     # 路径匹配
+      #     - Path=/user/**
+      #   filters:
+      #     # 切掉第一个/前面的，/user
+      #     - StripPrefix=1
       globalcors:
         # 跨域配置
         cors-configurations:
           '[/**]':
             # 允许携带认证信息
-            allow-credentials: true
+            allow-credentials: false
             # 允许的域名
             allowed-origins: "*"
             # 跨域头设置
@@ -78,3 +84,10 @@ spring:
                 OPTION
         add-to-simple-url-handler-mapping: true
       default-filters[0]: DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
+
+knife4j:
+  gateway:
+    enabled: true
+    strategy: discover
+    discover:
+      enabled: true

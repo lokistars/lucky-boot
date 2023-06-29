@@ -1,3 +1,4 @@
+/*
 package com.lucky.gateway.doc;
 
 import java.util.ArrayList;
@@ -74,3 +75,4 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
         this.environment = environment;
     }
 }
+*/
