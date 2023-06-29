@@ -41,7 +41,7 @@ public class SwaggerResourceConfig implements SwaggerResourcesProvider {
             route.getPredicates().stream().filter((predicateDefinition) -> {
                 return "Path".equalsIgnoreCase(predicateDefinition.getName());
             }).forEach((predicateDefinition) -> {
-                resources.add(this.swaggerResource(route.getId(), ((String)predicateDefinition.getArgs().get("pattern")).replace("**", "v2/api-docs")));
+                resources.add(this.swaggerResource(route.getId(), ((String)predicateDefinition.getArgs().get("pattern")).replace("**", "v3/api-docs")));
             });
         });
 

@@ -4,18 +4,17 @@
 //
 
 package com.lucky.gateway.doc;
-
-import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 
 @Component
 public class SwaggerHeaderFilter extends AbstractGatewayFilterFactory {
     private static final String HEADER_NAME = "X-Forwarded-Prefix";
-    private static final String URI = "/v2/api-docs";
+    private static final String URI = "/v3/api-docs";
 
     public SwaggerHeaderFilter() {}
 

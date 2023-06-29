@@ -2,7 +2,6 @@ package com.lucky.platform.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lucky.platform.entity.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @since 2020-09-12
  */
 
-public interface UserService extends IService<User>, UserDetailsService {
+public interface UserService extends IService<User> {
 
     /**
      * 模拟分布式锁,抢单

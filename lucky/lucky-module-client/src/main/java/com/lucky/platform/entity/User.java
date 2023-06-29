@@ -6,9 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import java.util.Collection;
+
 import java.util.Date;
 
 /**
@@ -21,7 +19,7 @@ import java.util.Date;
  */
 @Schema(name = "TUser对象", description = "用户登录")
 @TableName("t_user")
-public class User extends Model<User> implements UserDetails  {
+public class User extends Model<User>   {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,43 +64,6 @@ public class User extends Model<User> implements UserDetails  {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    //角色
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return userName;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
     }
 
     public void setPassword(String password) {

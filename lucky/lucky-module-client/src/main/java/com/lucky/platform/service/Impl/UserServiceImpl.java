@@ -1,11 +1,10 @@
 package com.lucky.platform.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.platform.config.RabbitMqConfig;
 import com.lucky.platform.entity.User;
 import com.lucky.platform.mapper.UserMapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.platform.service.UserService;
 import org.redisson.RedissonRedLock;
 import org.redisson.api.RLock;
@@ -15,15 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -55,19 +50,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
-
-    /**
-     * 认证业务
-     *
-     * @param userName 用户输入的用户名
-     * @return
-     * @throws UsernameNotFoundException
-     */
-    @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        //this.getBaseMapper().selectList(Wrappers.<User>lambdaQuery().eq(User::getUserName,userName));
-        return lambdaQuery().eq(User::getUserName,userName).eq(User::getUserStats,0).one();
-    }
 
     /**
      * 模拟不同的用户 订单为 getId() 用户为 version

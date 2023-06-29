@@ -1,3 +1,4 @@
+/*
 package com.lucky.platform.filter;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+*/
 /**
  * security 自定义验证登录过滤器
  *
  * @author 53276
- */
+ *//*
+
 public class JwtVerifyFilter extends BasicAuthenticationFilter {
 
     public JwtVerifyFilter(AuthenticationManager authenticationManager) {
@@ -38,3 +41,4 @@ public class JwtVerifyFilter extends BasicAuthenticationFilter {
         }
     }
 }
+*/

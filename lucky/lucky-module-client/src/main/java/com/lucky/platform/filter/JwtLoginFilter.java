@@ -1,3 +1,4 @@
+/*
 package com.lucky.platform.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,11 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+*/
 /**
  * security 自定义认证过滤器
  *
  * @author 53276
- */
+ *//*
+
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
@@ -27,14 +30,16 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         this.authenticationManager = authenticationManager;
     }
 
-    /**
+    */
+/**
      * 认证
      *
      * @param request  request
      * @param response response
      * @return
      * @throws AuthenticationException
-     */
+     *//*
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
@@ -48,7 +53,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
-    /**
+    */
+/**
      * 认证成功 给客户返回 Token
      *
      * @param request
@@ -57,7 +63,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
      * @param authResult
      * @throws IOException
      * @throws ServletException
-     */
+     *//*
+
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         //认证成功后通过authResult得到用户的属性
@@ -69,3 +76,4 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     }
 }
+*/

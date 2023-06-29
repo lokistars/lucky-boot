@@ -14,12 +14,11 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public OpenAPI createRestApi() {
-        return new OpenAPI()
-                .info(new Info().title("SpringBoot API 管理")
-                        .contact(new Contact().name("Loki").email("xxxx@163.com").url("https://blog.csdn.net/N_007"))
-                        .version("1.0")
-                        .termsOfService("http://doc.xiaominfo.com")
-                        .description("SpringBoot 集成 Knife4j 示例")
-                        .license(new License().name("Apache 2.0")));
+        return new OpenAPI().info(new Info().title("SpringBoot API 管理")
+                .contact(new Contact().name("Loki").email("xxxx@163.com").url("https://blog.csdn.net/N_007"))
+                .version("1.0")
+                .termsOfService("http://doc.xiaominfo.com")
+                .description("SpringBoot 集成 Knife4j 示例")
+                .license(new License().name("Apache 2.0")));
     }
 }
