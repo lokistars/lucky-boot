@@ -1,20 +1,17 @@
 spring:
   profiles:
     active: dev
-  rabbitmq:
-    host: 119.91.148.176
-    port: 5672
-    username: guest
-    password: guest
-    virtual-host: /
 
+knife4j:
+  production: false
+  enable: true
+  basic:
+    enable: false
+    username: admin
+    password: admin
 
 nacos:
   server: 101.43.63.132:8848
   username: dev
   password: dev
   namespace: 76f1596d-8d58-404c-adff-30494b5cc784
-redis:
-  host: 10.10.11.115
-  port: 6379
-  password: 1234

@@ -31,3 +31,10 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
+
+  rabbitmq:
+    host: 119.91.148.176
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /

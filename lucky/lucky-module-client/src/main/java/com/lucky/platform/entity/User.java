@@ -1,21 +1,15 @@
 package com.lucky.platform.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-
-import java.util.Collection;
-import java.util.Date;
-
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
-
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * <p>
@@ -25,35 +19,35 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author Nuany
  * @since 2020-09-12
  */
-@ApiModel(value = "TUser对象", description = "用户登录")
+@Schema(name = "TUser对象", description = "用户登录")
 @TableName("t_user")
 public class User extends Model<User> implements UserDetails  {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "ID自增")
+    @Schema(name = "ID自增")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty(value = "用户名")
+     @Schema(name = "用户名")
     @TableField("userName")
     private String userName;
 
-    @ApiModelProperty(value = "密码")
+     @Schema(name = "密码")
     private String password;
 
-    @ApiModelProperty(value = "用户状态,0 正常,1禁用,2删除")
+     @Schema(name = "用户状态,0 正常,1禁用,2删除")
     @TableField(value = "user_stats")
     private Integer userStats;
 
-    @ApiModelProperty(value = "版本")
+     @Schema(name = "版本")
     private Integer version;
 
-    @ApiModelProperty(value = "创建时间")
+     @Schema(name = "创建时间")
     @TableField("create_time")
     private Date createTime;
 
-    @ApiModelProperty(value = "修改时间")
+     @Schema(name = "修改时间")
     @TableField("update_time")
     private Date updateTime;
 

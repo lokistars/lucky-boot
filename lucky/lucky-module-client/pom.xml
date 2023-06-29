@@ -129,11 +129,10 @@
             <version>${itextpdf.version}</version>
         </dependency>-->
 
-        <!-- swagger-ui -->
+        <!-- knife4j swagger-ui -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>${swagger2.version}</version>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
         </dependency>
 
         <!--发送邮件-->

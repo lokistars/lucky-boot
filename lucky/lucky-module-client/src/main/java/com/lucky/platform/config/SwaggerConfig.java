@@ -2,36 +2,24 @@ package com.lucky.platform.config;
 
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableKnife4j
 @Configuration
-@EnableSwagger2
-@ConditionalOnProperty(name = "swagger.enabled", matchIfMissing = true)
 public class SwaggerConfig {
     @Bean
-    public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)//.groupName("A组")
-                .apiInfo(apiInfo())
-                //.enable(flag) //是否启动 Swagger
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.lucky.nacos.controller"))
-                .build();
-    }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("Spring Boot中使用Swagger2构建RESTful APIs")
-                .description("更多请关注http://www.baidu.com")
-                .termsOfServiceUrl("http://www.baidu.com")
-                .version("1.0")
-                .build();
+    public OpenAPI createRestApi() {
+        return new OpenAPI()
+                .info(new Info().title("SpringBoot API 管理")
+                        .contact(new Contact().name("Loki").email("xxxx@163.com").url("https://blog.csdn.net/N_007"))
+                        .version("1.0")
+                        .termsOfService("http://doc.xiaominfo.com")
+                        .description("SpringBoot 集成 Knife4j 示例")
+                        .license(new License().name("Apache 2.0")));
     }
 }
