@@ -34,10 +34,13 @@ spring:
         # 共享配置文件
         shared-configs:
           - data-id: lucky-common.yml
+  elasticsearch:
+    enable: false
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml
-  
+
+
 
 #监控
 management:

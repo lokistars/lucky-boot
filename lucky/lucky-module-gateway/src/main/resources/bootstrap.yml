@@ -36,13 +36,15 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
-          #          predicates:
-          #            - Path=pattern,'/'+serviceId.toLowerCase().replace('dms-service-','').replace('dz-service-','')+'/**'
+          enabled: true #开启从注册中心动态创建路由的功能，利用微服务名进行路由
+          #predicates:
+            #- Path=pattern,'/'+serviceId.toLowerCase().replace('dms-service-','').replace('dz-service-','')+'/**'
           filters:
-            #            - SwaggerHeaderFilter
+            #- SwaggerHeaderFilter  #配置自定义过滤器
             - StripPrefix=1
-          include-expression: serviceId matches '^((?!gateway).)*' && serviceId matches '.*-(api|front).*'
+          # 根据服务名排除一些不需要暴漏给网关服务 使用SPEL表达式
+          include-expression: serviceId matches '^((?!gateway).)*' && serviceId matches '.*-(api|client).*'
+          url-expression: "'lb://'+serviceId"
           route-id-prefix:
       # 路由配置
       routes:
@@ -56,32 +58,30 @@ spring:
       # - id: dms-service-uc
       #   # URI
       #   uri: lb://dms-service-uc
-      #   # 路由条件
+      #   # 路由条件 支持多种匹配类型,包含After、Before、Between、Cookie、Header、Host、Method等。
       #   predicates:
       #     # 路径匹配
       #     - Path=/user/**
       #   filters:
-      #     # 切掉第一个/前面的，/user
+      #     # 截取一个匹配前缀,切掉第一个/前面的，/user
       #     - StripPrefix=1
+
       globalcors:
         # 跨域配置
         cors-configurations:
           '[/**]':
-            # 允许携带认证信息
-            allow-credentials: false
+            # 允许携带认证信息,表示浏览器可以发送跨域请求的凭证
+            allow-credentials: true
             # 允许的域名
-            allowed-origins: "*"
+            # allowed-origins: "*"
+            allowed-origin-patterns: "*"
             # 跨域头设置
             allowed-headers: "*"
             # 跨域预请求
             max-age: 1800
             # 跨域方法
-            allowed-methods:
-              - GET
-                POST
-                DELETE
-                PUT
-                OPTION
+            allowed-methods: "GET,POST,DELETE,PUT,OPTION"
+
         add-to-simple-url-handler-mapping: true
       default-filters[0]: DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
 
@@ -91,3 +91,4 @@ knife4j:
     strategy: discover
     discover:
       enabled: true
+      excluded-services: ${spring.application.name}
