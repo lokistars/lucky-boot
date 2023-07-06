@@ -26,6 +26,8 @@ log/
 # out
 **/out/
 
+node_modules/
+
 # Mac
 .DS_Store
 
