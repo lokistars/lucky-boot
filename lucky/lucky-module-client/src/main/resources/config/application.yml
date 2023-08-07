@@ -9,6 +9,12 @@ knife4j:
     enable: false
     username: admin
     password: admin
+  setting:
+    enable-group: false
+springdoc:
+  api-docs:
+    path: /v3/api-docs/default
+
 
 nacos:
   server: 101.43.63.132:8848

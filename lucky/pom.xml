@@ -21,6 +21,7 @@
         <module>lucky-module-client</module>
         <module>lucky-module-common</module>
         <module>lucky-module-service</module>
+        <module>lucky-module-gateway</module>
     </modules>
 
     <properties>
@@ -36,14 +37,14 @@
         <mybatis.version>2.1.2</mybatis.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <fastjson.version>1.2.72</fastjson.version>
-        <swagger3.version>4.1.0</swagger3.version>
+        <swagger3.version>4.3.0</swagger3.version>
         <itextpdf.version>5.5.13.1</itextpdf.version>
         <hutool.version>5.4.0</hutool.version>
         <mail.version>1.6.2</mail.version>
         <jjwt.version>0.11.1</jjwt.version>
         <zookeeper.version>3.6.1</zookeeper.version>
         <netty.version>4.1.61.Final</netty.version>
-        <protobuf.version>3.13.0</protobuf.version>
+        <protobuf.version>3.21.12</protobuf.version>
         <junit.version>4.13.2</junit.version>
         <shardingSphere.version>4.1.1</shardingSphere.version>
         <binlog.version>0.20.1</binlog.version>

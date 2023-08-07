@@ -37,8 +37,11 @@ spring:
       discovery:
         locator:
           enabled: true #开启从注册中心动态创建路由的功能，利用微服务名进行路由
-          #predicates:
-            #- Path=pattern,'/'+serviceId.toLowerCase().replace('dms-service-','').replace('dz-service-','')+'/**'
+          predicates:
+           #- Path=pattern,'/'+serviceId.toLowerCase().replace('lucky-','').replace('-client','')+'/**'
+            - name: Path
+              args:
+                pattern: "'/'+serviceId.toLowerCase().replace('lucky-module','')+'/**'"
           filters:
             #- SwaggerHeaderFilter  #配置自定义过滤器
             - StripPrefix=1
@@ -52,6 +55,7 @@ spring:
           uri: no://op
           predicates:
             - Path=/favicon.ico
+           #- Method=GET,POST,PUT,DELETE
           filters:
             - SetPath=/
       # 唯⼀路由ID，一般直接用服务名即可

@@ -14,8 +14,8 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Map;
 
-@Primary
-@Component
+//@Primary
+//@Component
 public class SwaggerServiceDiscoverHandler extends ServiceDiscoverHandler {
 
     @Autowired
@@ -49,17 +49,19 @@ public class SwaggerServiceDiscoverHandler extends ServiceDiscoverHandler {
             return;
         }
         for (PredicateDefinition predicate : predicates) {
-            final Map<String, String> args = predicate.getArgs();
-            final String replaceStr = "serviceId.toLowerCase()" +
-                    ".replace(\"lucky\",\"\")" +
-                    ".replace(\"client\",\"\")" +
-                    ".replace(\"service\",\"\")" +
-                    ".replace(\"admin\",\"\")" +
-                    ".replace(\"api\",\"\")" +
-                    ".replace(\"app\",\"\")" +
-                    ".replace(\"-\",\"\")";
-            args.computeIfPresent(RoutePredicateFactory.PATTERN_KEY, (k, v) ->
-                    v.replace("serviceId", replaceStr));
+            if (predicate.getName().equals("Path")){
+                final Map<String, String> args = predicate.getArgs();
+                final String replaceStr = "serviceId.toLowerCase()" +
+                        ".replace(\"lucky\",\"\")" +
+                        ".replace(\"client\",\"\")" +
+                        ".replace(\"service\",\"\")" +
+                        ".replace(\"admin\",\"\")" +
+                        ".replace(\"api\",\"\")" +
+                        ".replace(\"app\",\"\")" +
+                        ".replace(\"-\",\"\")";
+                args.computeIfPresent(RoutePredicateFactory.PATTERN_KEY, (k, v) ->
+                        v.replace("serviceId", replaceStr));
+            }
         }
     }
 
