@@ -1,5 +1,5 @@
 server:
-  port: 5002
+  port: 6010
 spring:
   application:
     # 服务注册应用名称,它是构成 Nacos 配置管理 dataId字段的一部分
