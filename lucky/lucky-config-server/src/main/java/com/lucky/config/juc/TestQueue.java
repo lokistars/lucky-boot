@@ -1,4 +1,4 @@
-package com.lucky.config.executor;
+package com.lucky.config.juc;
 
 import com.lucky.config.util.MyPriorityQueue;
 

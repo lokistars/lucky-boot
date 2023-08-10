@@ -1,8 +1,11 @@
-package com.lucky.config.executor;
+package com.lucky.config.juc;
 
+import com.google.common.collect.Lists;
 import com.lucky.config.util.MyLinkedBlockingQueue;
 import com.lucky.config.util.MyThreadPoolExecutor;
 
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -12,7 +15,13 @@ import java.util.concurrent.TimeUnit;
  **/
 public class TestExecutor {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)throws Exception {
+
+        final ArrayList<Callable<Integer>> list = Lists.newArrayList();
+        list.add(()->{
+            System.out.println("123");
+            return 1;
+        });
 
         MyThreadPoolExecutor executor = new MyThreadPoolExecutor(
                 1, 1, 100L, TimeUnit.SECONDS,
@@ -22,6 +31,9 @@ public class TestExecutor {
         executor.execute(() -> {
             System.out.println("1231");
         });
+
+        executor.invokeAny(list);
+        executor.shutdown();
 
         CompletableFuture.runAsync(()->{
 

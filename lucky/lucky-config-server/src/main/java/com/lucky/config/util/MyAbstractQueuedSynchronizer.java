@@ -1195,6 +1195,9 @@ public class MyAbstractQueuedSynchronizer implements Serializable {
         return unsafe.compareAndSwapObject(this, tailOffset, expect, update);
     }
 
+    /**
+     *  等待队列,当资源可用时,等待队列中的第一个线程将被唤醒并获得资源
+     */
     static final class Node {
         /**
          * 共享模式下的等待标记,共享锁

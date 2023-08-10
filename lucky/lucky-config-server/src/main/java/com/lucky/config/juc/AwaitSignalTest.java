@@ -1,13 +1,11 @@
-package com.lucky.juc;
+package com.lucky.config.juc;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
-import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
 /**
@@ -33,8 +31,10 @@ public class AwaitSignalTest {
         new Thread(()->{
             awaitSignal.print("c",c,a);
         },"a").start();
+
         TimeUnit.SECONDS.sleep(1);
         awaitSignal.lock();
+
         try {
             System.out.println("开始了。。");
             a.signal();
@@ -56,7 +56,7 @@ public class AwaitSignalTest {
 
 class AwaitSignal extends ReentrantLock{
     // 打印次数
-    private int loopNumber;
+    private final int loopNumber;
 
     public AwaitSignal(int loopNumber) {
         this.loopNumber = loopNumber;
