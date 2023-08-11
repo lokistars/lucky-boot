@@ -41,9 +41,9 @@ spring:
            #- Path=pattern,'/'+serviceId.toLowerCase().replace('lucky-','').replace('-client','')+'/**'
             - name: Path
               args:
-                pattern: "'/'+serviceId.toLowerCase().replace('lucky-module','')+'/**'"
+                pattern: "'/'+serviceId.toLowerCase().replace('lucky-module-','')+'/**'"
           filters:
-            #- SwaggerHeaderFilter  #配置自定义过滤器
+            - SwaggerHeaderFilter  #配置自定义过滤器
             - StripPrefix=1
           # 根据服务名排除一些不需要暴漏给网关服务 使用SPEL表达式
           include-expression: serviceId matches '^((?!gateway).)*' && serviceId matches '.*-(api|client).*'

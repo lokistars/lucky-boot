@@ -10,7 +10,7 @@ knife4j:
     username: admin
     password: admin
   setting:
-    enable-group: false
+    enable-group: true
 springdoc:
   api-docs:
     path: /v3/api-docs/default

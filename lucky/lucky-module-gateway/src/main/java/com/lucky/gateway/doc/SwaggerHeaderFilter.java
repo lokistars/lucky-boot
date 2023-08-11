@@ -17,6 +17,12 @@ public class SwaggerHeaderFilter extends AbstractGatewayFilterFactory<Object> {
     private static final String URI = "/v3/api-docs";
 
 
+    /**
+     * 如果配置gateway.discovery.locator.enabled:true 过滤器失效,需要在filters中手动指定
+     * @param config 配置类
+     * @return
+     */
+    @Override
     public GatewayFilter apply(Object config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
