@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: dev
+  jackson:
+    default-property-inclusion: NON_EMPTY
 
 knife4j:
   production: false
@@ -11,9 +13,11 @@ knife4j:
     password: admin
   setting:
     enable-group: true
-springdoc:
-  api-docs:
-    path: /v3/api-docs/default
+#springdoc:
+#  api-docs:
+#    path: /v3/api-docs/default
+#  group-configs:
+#    - group: 'default'
 
 
 nacos:

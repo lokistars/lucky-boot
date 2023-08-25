@@ -10,9 +10,9 @@
     </parent>
 
     <!--<groupId>com.lucky.platform</groupId>-->
-    <artifactId>lucky-module-client</artifactId>
+    <artifactId>lucky-module-admin</artifactId>
     <version>${lucky.version}</version>
-    <name>lucky-module-client</name>
+    <name>lucky-module-admin</name>
 
     <description>module client Spring Boot</description>
     <dependencies>
@@ -175,6 +175,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.version}</version>
                 <configuration>
                     <finalName>${project.build.finalName}</finalName>
                     <!--<excludeGroupIds>com.dz.open</excludeGroupIds>-->

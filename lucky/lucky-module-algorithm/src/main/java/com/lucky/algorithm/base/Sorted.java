@@ -43,16 +43,16 @@ public class Sorted {
 
 
     /**
-     * 第一个数和第二个数进行比较 如果比他大挪到后面的位置 直到最大的那个数排在最后
+     * 从所有序列中先找到最小的，然后放到第一个位置。之后再看剩余元素中最小的，放到第二个位置……以此类推
      * @param arr
      */
-    public static void SelectionSorts(int[] arr) {
+    public static void selectionSorts(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
         for (int i = 0; i < arr.length - 1; i++) {
             int minIndex = i;
-            // 选择出最大的那个数,然后放在排序的最后
+            // 选择出最小的那个数位置,然后放在排序的最前面
             for (int j = i + 1; j < arr.length; j++) {
                 minIndex = arr[j] < arr[minIndex] ? j : minIndex;
             }
@@ -62,7 +62,7 @@ public class Sorted {
 
     /**
      * 将一个数据插入到已经排好序的有序数据中,从而得到一个新的、个数加一的有序数据插入
-     * 将一个数想前一个数比较 比他大或者小(自定义规则), 互换位置,如条件不成立 不需要互换位置, 因为之前的数是有序的
+     * 将一个数和前一个数比较 比他大或者小(自定义规则), 互换位置,如条件不成立 不需要互换位置, 因为之前的数是有序的
      * @param arr
      */
     public static void insertionSort(int[] arr) {
