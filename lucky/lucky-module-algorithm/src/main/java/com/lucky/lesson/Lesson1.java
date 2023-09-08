@@ -6,6 +6,8 @@ package com.lucky.lesson;
  * 常数时间操作,(数值运算),数组寻址,数组在内存在是一个连续结构的,可以直接到具体下标
  * 不是固定时间: 比如链表,是一个跳转结构,不是连续的,需要循环查找
  * O(1) O(logN) O(N) O(N*logN) O(N^2) O(N^3)··· O(2^N) O(3^N) O(N!)
+ * 二分查找
+ * 寻找峰值
  * @author: Loki
  * @data: 2021-11-11 15:12
  **/
@@ -145,6 +147,45 @@ public class Lesson1 {
         return left;
     }
 
+    /**
+     * 寻找峰值
+     * 峰值元素是指其值严格大于左右相邻值的元素
+     * @param arr 数组
+     * @return
+     */
+    private static int findPeakElement(int[] arr){
+        if (arr == null || arr.length == 0){
+            return -1;
+        }
+        int size = arr.length;
+
+        if (size == 1 || arr[0]> arr[1]) {
+            return 0;
+        }
+        if (arr[size-1] > arr[size-2]){
+            return size-1;
+        }
+        int l=1,m,r=size-2,ans=-1;
+        while (l < r){
+            m = l + ((r-l)>>1);
+            if (arr[m] < arr[m-1]){
+                r = m-1;
+            } else if (arr[m] < arr[m+1]) {
+                l = m+1;
+            }else{
+                ans = m;
+                break;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 随机生成数组
+     * @param maxSize 随机大小
+     * @param maxValue 随机值
+     * @return 数组
+     */
     private  static int[] generateRandomArray(int maxSize,int maxValue){
         // Math.random() [0,1) 所有小数等概率返回一个
         int[] arr = new int[(int)((maxSize +1)*Math.random())];
