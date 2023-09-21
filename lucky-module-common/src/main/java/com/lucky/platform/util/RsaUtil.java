@@ -11,6 +11,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 
 /**
+ * 非对称加密算法, 效率比对称加密慢
  * @author Nuany
  */
 public class RsaUtil {

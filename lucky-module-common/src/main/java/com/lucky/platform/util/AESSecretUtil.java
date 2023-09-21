@@ -10,8 +10,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 
 /**
- * @Author: Helon
- * @Description: AES加密工具类
+ * @Author: Nuany
+ * @Description: AES加密工具类,对称加密算法
  * @Data: Created in 2018/7/28 18:38
  * @Modified By:
  */
